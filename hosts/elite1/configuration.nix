@@ -97,13 +97,10 @@
     extraGroups = [ "networkmanager" "wheel" "dialout" ];
     packages = with pkgs; [
       firefox
-      neovim
-      vim
       google-chrome
       kitty
       bat
       ripgrep
-      git
       via
       vial
       killall
@@ -141,8 +138,11 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    git
+    vim
+    neovim
+    wget
+    curl
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
