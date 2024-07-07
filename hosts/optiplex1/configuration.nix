@@ -1,18 +1,15 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
 { config, pkgs, ... }:
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
       ./hardware-configuration.nix
       ./home-assistant.nix
       ./zwave.nix
       ./esphome.nix
       ./mqtt.nix
       ./ups.nix
+      ./acme.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -25,10 +22,6 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   networking.firewall.enable = false;
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -71,20 +64,6 @@
     enable = true;
     useRoutingFeatures = "server";
   };
-
-  #services.home-assistant = {
-    #enable = true;
-    #extraComponents = [
-      #"esphome"
-      #"met"
-      #"radio_browser"
-      #"tplink"
-      #"awair"
-    #];
-    #config = {
-      #default_config = {};
-    #};
-  #};
 
   programs.fish.enable = true;
 
@@ -129,52 +108,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  #networking.firewall.allowedTCPPorts = [ 8123 ];
-
-
-  networking.firewall.allowedTCPPorts = [ 631 8123 ];
-  networking.firewall.allowedUDPPorts = [ 631 ];
-
-  #services.printing = {
-    #enable = true;
-    #drivers = with pkgs; [ brlaser ];
-    #browsing = true;
-    #defaultShared = true;
-    #listenAddresses = [ "*:631" ];
-    #allowFrom = [ "all" ];
-  #};
-
-  #services.avahi = {
-    #enable = true;
-    #nssmdns = true;
-    #openFirewall = true;
-    #publish = {
-      #enable = true;
-      #addresses = true;
-      #domain = true;
-      #userServices = true;
-      #workstation = true;
-    #};
-  #};
-
-  #system.nssModules = pkgs.lib.optional true pkgs.nssmdns;
-  #system.nssDatabases.hosts = pkgs.lib.optionals true (pkgs.lib.mkMerge [
-    #(pkgs.lib.mkBefore [ "mdns4_minimal [NOTFOUND=return]" ])
-    #(pkgs.lib.mkAfter [ "mdns4" ])
-  #]);
-
-  #hardware.printers = {
-    #ensurePrinters = [
-      #{
-        #name = "Brother_MFC-7460DN";
-        #location = "Home";
-        #deviceUri = "dnssd://Brother%20MFC-7460DN._pdl-datastream._tcp.local/";
-        #model = "br7460dn.ppd";
-        #ppdOptions = {};
-      #}
-    #];
-    #ensureDefaultPrinter = "Brother_MFC-7460DN";
-  #};
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
