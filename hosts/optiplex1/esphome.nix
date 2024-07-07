@@ -1,10 +1,15 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
+let
+  esphomePkg = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.esphome;
+in
 {
   services.esphome = {
     enable = true;
     openFirewall = true;
     address = "0.0.0.0";
-    package = nixpkgs-unstable.legacyPackages.${system}.esphome;
+    package = esphomePkg;
   };
+
+  environment.systemPackages = [ esphomePkg ];
 }
