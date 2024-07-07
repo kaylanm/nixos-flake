@@ -12,6 +12,7 @@
       ./zwave.nix
       ./esphome.nix
       ./mqtt.nix
+      ./ups.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];

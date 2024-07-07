@@ -62,6 +62,7 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/optiplex1/configuration.nix
+	    { _module.args = { inherit inputs; }; }
           ];
         };
 
