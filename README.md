@@ -11,4 +11,4 @@ This repository is inspired by [nixos-configs][nixos-configs].
 [home-manager]: https://github.com/nix-community/home-manager
 [rfc-0140]: https://github.com/NixOS/rfcs/pull/140
 [sops-nix]: https://github.com/Mic92/sops-nix
-[nixos-configs]: (https://github.com/reckenrode/nixos-configs)
+[nixos-configs]: https://github.com/reckenrode/nixos-configs
