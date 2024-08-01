@@ -14,7 +14,7 @@
   ];
 
   wsl.enable = true;
-  wsl.defaultUser = "nixos";
+  wsl.defaultUser = "mike";
 
   programs.fish.enable = true;
   programs.nix-ld.enable = true;
@@ -30,7 +30,7 @@
   networking.hostName = "auriga-nixos";
   networking.firewall.enable = false;
 
-  users.users.nixos.shell = pkgs.fish;
+  users.users.mike.shell = pkgs.fish;
   users.users.root.shell = pkgs.fish;
 
   # This value determines the NixOS release from which the default
