@@ -10,8 +10,7 @@
 {
   imports = [
     # include NixOS-WSL modules
-    "${inputs.nixos-wsl}/modules"
-    #<nixos-wsl/modules>
+    inputs.nixos-wsl.nixosModules.wsl
   ];
 
   wsl.enable = true;
