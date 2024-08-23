@@ -2,7 +2,6 @@
 
 {
   security.acme = {
-    enable = true;
     acceptTerms = true;
     defaults.email = "mike+acme@kaylanm.net";
     certs."kaylan.dev" = {
