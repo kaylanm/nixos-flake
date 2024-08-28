@@ -16,6 +16,12 @@
   wsl.enable = true;
   wsl.defaultUser = "mike";
 
+  nix = {
+    package = pkgs.nixFlakes;
+    extraOptions = lib.optionalString (config.nix.package == pkgs.nixFlakes)
+      "experimental-features = nix-command flakes";
+  };
+
   programs.fish.enable = true;
   programs.nix-ld.enable = true;
 
