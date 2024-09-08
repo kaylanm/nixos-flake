@@ -31,6 +31,9 @@
     neovim
     wget
     curl
+    bat
+    ripgrep
+    inputs.colmena.packages.x86_64-linux.colmena
   ];
 
   networking.hostName = "auriga-nixos";

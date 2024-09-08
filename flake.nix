@@ -17,13 +17,16 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    colmena.url = "github:zhaofengli/colmena";
+    colmena.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
     let
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
     in
-    {
+    rec {
       darwinConfigurations = {
       #   josette = nix-darwin.lib.darwinSystem {
       #     inherit inputs;
@@ -66,6 +69,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex1/configuration.nix
+            { _module.args = { inherit inputs; }; }
           ];
         };
 
@@ -98,6 +102,19 @@
           ];
         };
 
+        nixos-1 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/nixos-1/configuration.nix
+          ];
+        };
+
+        nixos-2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/nixos-2/configuration.nix
+          ];
+        };
 
 
         # meteion = nixpkgs.lib.nixosSystem {
@@ -141,6 +158,15 @@
         #   ] ++ modules.nixos;
         # };
       };
+
+      colmena = {
+        meta = {
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = [];
+          };
+        };
+      } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
 
       hmModules = {
       #   reckenrode = {
