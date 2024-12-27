@@ -20,6 +20,10 @@
 
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
+
+    ghostty.url = "github:ghostty-org/ghostty";
+    #ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
+    #ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-manager-unstable, sops-nix, ... }@inputs:

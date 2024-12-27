@@ -112,6 +112,7 @@
       unzip
       alacritty
       gparted
+      inputs.packages.x86_64-linux.ghostty
       #lrzsz
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
