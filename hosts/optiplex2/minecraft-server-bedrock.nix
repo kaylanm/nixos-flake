@@ -4,7 +4,7 @@
   virtualisation.oci-containers.containers = {
     bedrock-server = {
       environment = {
-        ALLOW_CHEATS = "false";
+        ALLOW_CHEATS = "true";
         EULA = "true";
         DIFFICULTY = "1";
         SERVER_NAME = "Ryan Minecraft";
