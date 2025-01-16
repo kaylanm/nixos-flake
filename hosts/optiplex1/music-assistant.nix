@@ -24,5 +24,5 @@
       "spotify"
       "ytmusic"
     ];
-  }
+  };
 }
