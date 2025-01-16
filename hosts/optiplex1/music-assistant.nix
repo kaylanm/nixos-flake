@@ -15,6 +15,7 @@
       "fully_kiosk"
       "hass"
       "hass_players"
+      "musicbrainz"
       "opensubsonic"
       "player_group"
       "radiobrowser"
@@ -22,6 +23,7 @@
       "snapcast"
       "soundcloud"
       "spotify"
+      "theaudiodb"
       "ytmusic"
     ];
   };
