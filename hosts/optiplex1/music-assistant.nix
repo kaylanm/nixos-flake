@@ -3,7 +3,7 @@
 {
   services.music-assistant = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.music-assistant;
+    #package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.music-assistant;
     providers = [
       "airplay"
       "apple_music"
@@ -17,7 +17,7 @@
       "hass_players"
       "musicbrainz"
       "opensubsonic"
-      "player_group"
+      #"player_group"
       "radiobrowser"
       "slimproto"
       "snapcast"
