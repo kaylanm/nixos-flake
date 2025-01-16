@@ -10,6 +10,7 @@
       ./mqtt.nix
       ./ups.nix
       ./acme.nix
+      ./music-assistant.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
