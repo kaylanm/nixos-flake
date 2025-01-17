@@ -4,7 +4,7 @@
   virtualisation.oci-containers = {
     backend = "docker";
     containers = {
-      homeAssistant = {
+      musicAssistant = {
         image = "ghcr.io/music-assistant/server:2.3.6";
         extraOptions = [
           "--network=host"
