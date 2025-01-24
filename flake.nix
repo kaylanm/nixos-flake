@@ -21,7 +21,7 @@
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
 
-    ghostty.url = "github:ghostty-org/ghostty";
+    #ghostty.url = "github:ghostty-org/ghostty";
     #ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
     #ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
   };
