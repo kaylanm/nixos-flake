@@ -34,6 +34,7 @@
     bat
     ripgrep
     inputs.colmena.packages.x86_64-linux.colmena
+    inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.yt-dlp
   ];
 
   networking.hostName = "auriga-nixos";
