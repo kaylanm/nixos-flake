@@ -20,5 +20,20 @@
     };
   };
 
+  services.restic.backups = {
+    optiplex2 = {
+      initialize = true;
+      repository = "rest:https://l9de4zro:35TurEpMF3PgUB38@l9de4zro.repo.borgbase.com";
+      paths = [
+        "/var/lib/bedrock-server/worlds"
+      ];
+      passwordFile = "/etc/restic-password";
+      timerConfig = {
+        OnCalendar = "*-*-* */6:00:00"; # every 6 hours
+        Persistent = true;
+      };
+    };
+  };
+
   networking.firewall.allowedUDPPorts = [ 19132 ];
 }
