@@ -29,7 +29,7 @@
       ];
       passwordFile = "/etc/restic-password";
       timerConfig = {
-        OnCalendar = "*-*-* */6:00:00"; # every 6 hours
+        OnCalendar = "* *-*-* */6:00:00"; # every 6 hours
         Persistent = true;
       };
     };
