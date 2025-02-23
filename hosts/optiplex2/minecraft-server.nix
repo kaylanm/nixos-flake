@@ -8,6 +8,7 @@
     declarative = true;
     whitelist = {
       ExInfernum = "5626c1e5-8638-44fe-87b4-f3ba40fae2f7";
+      Zavazone = "c07a0560-73a9-4f87-969c-e5ecde090872";
     };
     serverProperties = {
       #server-port = 43000;
