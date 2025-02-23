@@ -11,12 +11,12 @@
     };
     serverProperties = {
       #server-port = 43000;
-      difficulty = 3;
+      difficulty = 1; # easy
       gamemode = "survival";
-      max-players = 5;
+      # max-players = 5;
       motd = "Welcome to RyanCraft";
       white-list = true;
-      allow-cheats = false;
+      allow-cheats = true;
     };
     #jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
   };
