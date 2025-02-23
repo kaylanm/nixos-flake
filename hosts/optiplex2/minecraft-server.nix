@@ -18,6 +18,8 @@
       motd = "Welcome to RyanCraft";
       white-list = true;
       allow-cheats = true;
+      enable-rcon = true;
+      "rcon.password" = "hunter2";
     };
     #jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
   };
