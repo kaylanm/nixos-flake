@@ -8,8 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./backup.nix
       ./minecraft-server.nix
       ./minecraft-server-bedrock.nix
+      ./minecraft-server-atm10.nix
     ];
 
   # Bootloader.
