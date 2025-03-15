@@ -21,5 +21,7 @@
   networking.hostName = "auriga-nixos";
   networking.firewall.enable = false;
 
+  users.users.mike.shell = pkgs.fish;
+
   system.stateVersion = "23.11";
 }
