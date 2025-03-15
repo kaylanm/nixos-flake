@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
@@ -16,32 +12,15 @@
   wsl.enable = true;
   wsl.defaultUser = "mike";
 
-  nix = {
-    package = pkgs.nixVersions.stable;
-    extraOptions = lib.optionalString (config.nix.package == pkgs.nixVersions.stable)
-      "experimental-features = nix-command flakes";
-  };
-
-  programs.fish.enable = true;
   programs.nix-ld.enable = true;
 
   environment.systemPackages = with pkgs; [
-    git
-    vim
-    neovim
-    wget
-    curl
-    bat
-    ripgrep
     inputs.colmena.packages.x86_64-linux.colmena
     inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.yt-dlp
   ];
 
   networking.hostName = "auriga-nixos";
   networking.firewall.enable = false;
-
-  users.users.mike.shell = pkgs.fish;
-  users.users.root.shell = pkgs.fish;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

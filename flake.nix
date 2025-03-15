@@ -65,7 +65,7 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/elite1/configuration.nix
-          ];
+          ] ++ modules.nixos;
         };
 
         optiplex1 = nixpkgs.lib.nixosSystem {
@@ -74,28 +74,21 @@
           modules = [
             ./hosts/optiplex1/configuration.nix
             { _module.args = { inherit inputs; }; }
-          ];
+          ] ++ modules.nixos;
         };
 
         optiplex2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./hosts/optiplex2/configuration.nix
-          ];
+          ] ++ modules.nixos;
         };
 
         optiplex3 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./hosts/optiplex3/configuration.nix
-          ];
-        };
-
-        cybernix = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/cybernix/configuration.nix
-          ];
+          ] ++ modules.nixos;
         };
 
         auriga-nixos = nixpkgs.lib.nixosSystem {
@@ -103,21 +96,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/auriga-nixos/configuration.nix
-          ];
-        };
-
-        nixos-1 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/nixos-1/configuration.nix
-          ];
-        };
-
-        nixos-2 = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/nixos-2/configuration.nix
-          ];
+          ] ++ modules.nixos;
         };
 
 
