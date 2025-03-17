@@ -8,7 +8,7 @@
     serviceConfig = {
       Type = "simple";
       User = "minecraft";
-      ExecStart = ''/var/lib/minecraft-servers/stoneblock3/startserver.sh '';
+      ExecStart = ''/var/lib/minecraft-servers/stoneblock3/run.sh '';
       WorkingDirectory = "/var/lib/minecraft-servers/stoneblock3";
     };
     path = [ pkgs.jdk17 ];
