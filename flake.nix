@@ -79,6 +79,7 @@
 
         optiplex2 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex2/configuration.nix
           ] ++ modules.nixos;
@@ -86,6 +87,7 @@
 
         optiplex3 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex3/configuration.nix
           ] ++ modules.nixos;
