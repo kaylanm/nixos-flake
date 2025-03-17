@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   services.minecraft-server = {
@@ -24,6 +24,6 @@
     #jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
   };
 
-  nixpkgs.config.allowUnfree = true;
+  systemd.services.minecraft-server.wantedBy = lib.mkForce [ ];
 }
 
