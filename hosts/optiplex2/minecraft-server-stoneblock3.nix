@@ -11,6 +11,6 @@
       ExecStart = ''/var/lib/minecraft-servers/stoneblock3/run.sh '';
       WorkingDirectory = "/var/lib/minecraft-servers/stoneblock3";
     };
-    path = [ pkgs.jdk17 pkgs.sh ];
+    path = [ pkgs.jdk17 pkgs.bash ];
   };
 }
