@@ -2,7 +2,7 @@
 
 {
   systemd.services.minecraft-server-atm10 = {
-    wantedBy = [ "multi-user.target" ];
+    #wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     description = "ATM 10 Server";
     serviceConfig = {
