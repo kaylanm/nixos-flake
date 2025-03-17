@@ -4,7 +4,7 @@
   config = {
     nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-    gc = {
+    nix.gc = {
       automatic = true;
       interval = {
         Weekday = 0;
