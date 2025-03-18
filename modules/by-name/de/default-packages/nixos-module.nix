@@ -10,6 +10,10 @@
       wget
       bat
       ripgrep
+      fzf
+      eza
+      fd
+      btop
       tmux
       screen
       zip
