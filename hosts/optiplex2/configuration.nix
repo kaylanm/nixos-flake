@@ -9,6 +9,7 @@
       ./minecraft-server-bedrock.nix
       ./minecraft-server-atm10.nix
       ./minecraft-server-stoneblock3.nix
+      ./minecraft-server-oceanblock2.nix
     ];
 
   # Bootloader.
