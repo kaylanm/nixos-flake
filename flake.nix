@@ -32,32 +32,13 @@
     in
     rec {
       darwinConfigurations = {
-      #   josette = nix-darwin.lib.darwinSystem {
-      #     inherit inputs;
-      #     system = "aarch64-darwin";
-      #     modules = [
-      #       ./hosts/josette/configuration.nix
-      #       home-manager.darwinModules.home-manager
-      #     ] ++ modules.darwin;
-      #   };
-
-      #   natalia = nix-darwin.lib.darwinSystem {
-      #     inherit inputs;
-      #     system = "aarch64-darwin";
-      #     modules = [
-      #       ./hosts/natalia/configuration.nix
-      #       home-manager.darwinModules.home-manager
-      #     ] ++ modules.darwin;
-      #   };
-
-      #   iMac = nix-darwin.lib.darwinSystem {
-      #     inherit inputs;
-      #     system = "x86_64-darwin";
-      #     modules = [
-      #       ./hosts/imac/configuration.nix
-      #       home-manager.darwinModules.home-manager
-      #     ] ++ modules.darwin;
-      #   };
+        covenant = nix-darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
+          modules = [
+            ./hosts/covenant/configuration.nix
+            # home-manager.darwinModules.home-manager
+          ] ++ modules.darwin;
+        };
       };
 
       nixosConfigurations = {
