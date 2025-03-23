@@ -16,6 +16,19 @@
   # };
 
   networking.hostName = "covenant";
-  
+
   # security.pam.enableSudoTouchIdAuth = true;
+
+
+  programs.fish.enable = true;
+
+  users.users.mike = {
+    description = "Michael Kaylan";
+    shell = pkgs.fish;
+    home = "/Users/mike";
+  };
+
+  users.users.root.shell = pkgs.fish;
+
+  system.stateVersion = 5;
 }
