@@ -101,6 +101,14 @@
           ] ++ modules.nixos;
         };
 
+        auriga = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/auriga/configuration.nix
+          ] ++ modules.nixos;
+        };
+
 
         # meteion = nixpkgs.lib.nixosSystem {
         #   system = "x86_64-linux";
