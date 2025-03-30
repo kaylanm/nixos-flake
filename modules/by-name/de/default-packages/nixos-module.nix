@@ -18,6 +18,12 @@
       screen
       zip
       unzip
+      xz
+      p7zip
+      nix-output-monitor
+      nix-tree
+      usbutils
+      pciutils
     ];
   };
 }
