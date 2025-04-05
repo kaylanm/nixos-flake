@@ -20,6 +20,7 @@
       unzip
       xz
       p7zip
+      lsof
       nix-output-monitor
       nix-tree
       usbutils
