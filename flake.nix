@@ -34,6 +34,7 @@
       darwinConfigurations = {
         covenant = nix-darwin.lib.darwinSystem {
           system = "x86_64-darwin";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/covenant/configuration.nix
             # home-manager.darwinModules.home-manager
