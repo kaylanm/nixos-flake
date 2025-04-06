@@ -23,6 +23,7 @@
       lsof
       nix-output-monitor
       nix-tree
+    ] ++ lib.optionals pkgs.stdenv.isLinux [
       usbutils
       pciutils
     ];
