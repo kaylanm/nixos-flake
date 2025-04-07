@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, withGUI ? false, ... }:
 
 {
   config = {
@@ -23,9 +23,12 @@
       lsof
       nix-output-monitor
       nix-tree
+      nixfmt-rfc-style
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       usbutils
       pciutils
+    ] ++ lib.optionals withGUI [
+      nerdfonts
     ];
   };
 }
