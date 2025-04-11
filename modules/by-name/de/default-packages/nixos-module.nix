@@ -1,4 +1,4 @@
-{ lib, config, pkgs, withGUI ? false, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   config = {
@@ -27,8 +27,9 @@
     ] ++ lib.optionals pkgs.stdenv.isLinux [
       usbutils
       pciutils
-    ] ++ lib.optionals withGUI [
-      nerdfonts
     ];
+    #++ lib.optionals config.withGUI [
+    #  nerdfonts
+    #];
   };
 }
