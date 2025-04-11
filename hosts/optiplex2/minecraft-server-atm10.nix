@@ -8,7 +8,7 @@
     serviceConfig = {
       Type = "simple";
       User = "minecraft";
-      ExecStart = ''/var/lib/minecraft-servers/atm10/startserver.sh '';
+      ExecStart = "/var/lib/minecraft-servers/atm10/startserver.sh";
       WorkingDirectory = "/var/lib/minecraft-servers/atm10";
       Environment = [
         "ATM10_RESTART=false"

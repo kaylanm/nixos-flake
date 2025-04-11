@@ -8,7 +8,7 @@
     serviceConfig = {
       Type = "simple";
       User = "minecraft";
-      ExecStart = ''/var/lib/minecraft-servers/oceanblock2/run.sh '';
+      ExecStart = "/var/lib/minecraft-servers/oceanblock2/run.sh";
       WorkingDirectory = "/var/lib/minecraft-servers/oceanblock2";
     };
     path = [ pkgs.jdk21 pkgs.bash ];
