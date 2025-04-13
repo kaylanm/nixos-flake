@@ -3,7 +3,8 @@
 {
   services.caddy = {
     enable = true;
-    environmentFile = "/etc/caddy/environment";
+    # TODO: Switch when available
+    # environmentFile = "/etc/caddy/environment";
     globalConfig = ''
       tailscale {
         ephemeral true
@@ -14,4 +15,6 @@
       hash = "sha256-UR9CG/zIslkXHDj1fDWmhx8hJZ8VLvZzOTGvGqqx1Ls=";
     };
   };
+
+  systemd.services.caddy.serviceConfig.EnvironmentFile = [ "/etc/caddy/environment" ];
 }
