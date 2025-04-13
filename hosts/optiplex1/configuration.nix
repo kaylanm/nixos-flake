@@ -3,15 +3,16 @@
 {
   imports =
     [
+      ./acme.nix
+      ./caddy.nix
+      ./esphome.nix
       ./hardware-configuration.nix
       ./home-assistant.nix
-      ./zwave.nix
-      ./esphome.nix
       ./mqtt.nix
-      ./ups.nix
-      ./acme.nix
       ./music-assistant.nix
       ./restic.nix
+      ./ups.nix
+      ./zwave.nix
     ];
 
   # Bootloader.

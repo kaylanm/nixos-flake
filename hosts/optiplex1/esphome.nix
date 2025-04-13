@@ -6,10 +6,15 @@ in
 {
   services.esphome = {
     enable = true;
-    openFirewall = true;
-    address = "0.0.0.0";
     package = esphomePkg;
   };
 
+  # esphome cli for interactive use
   environment.systemPackages = [ esphomePkg ];
+
+  services.caddy.virtualHosts."https://esphome.manx-in.ts.net".extraConfig = ''
+    bind tailscale/esphome
+
+    reverse_proxy :6052
+  '';
 }
