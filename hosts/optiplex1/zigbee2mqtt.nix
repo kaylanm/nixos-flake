@@ -13,8 +13,13 @@
       mqtt = {
         user = "DVES_USER";
         password = "!/etc/zigbee2mqtt/secret.yaml password";
-
       };
     };
   };
+
+    services.caddy.virtualHosts."https://z2m.manx-in.ts.net".extraConfig = ''
+    bind tailscale/z2m
+
+    reverse_proxy :8080
+  '';
 }

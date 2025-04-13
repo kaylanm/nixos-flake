@@ -12,6 +12,7 @@
       ./music-assistant.nix
       ./restic.nix
       ./ups.nix
+      ./zigbee2mqtt.nix
       ./zwave.nix
     ];
 
