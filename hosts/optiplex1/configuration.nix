@@ -5,6 +5,7 @@
     [
       ./acme.nix
       ./caddy.nix
+      ./code-server.nix
       ./esphome.nix
       ./hardware-configuration.nix
       ./home-assistant.nix
