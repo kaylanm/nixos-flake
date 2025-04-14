@@ -12,6 +12,6 @@
   services.caddy.virtualHosts."https://code.manx-in.ts.net".extraConfig = ''
     bind tailscale/code
 
-    reverse_proxy :4444
+    reverse_proxy [::1]:4444
   '';
 }
