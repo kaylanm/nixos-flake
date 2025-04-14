@@ -3,7 +3,7 @@
 {
   services.zigbee2mqtt = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zigbee2mqtt_2;
+    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zigbee2mqtt;
     settings = {
       homeassistant = true;
       serial = {
@@ -14,10 +14,14 @@
         user = "DVES_USER";
         password = "!/etc/zigbee2mqtt/secret.yaml password";
       };
+      frontend = {
+        enabled = true;
+        url = "https://z2m.manx-in.ts.net";
+      };
     };
   };
 
-    services.caddy.virtualHosts."https://z2m.manx-in.ts.net".extraConfig = ''
+  services.caddy.virtualHosts."https://z2m.manx-in.ts.net".extraConfig = ''
     bind tailscale/z2m
 
     reverse_proxy :8080
