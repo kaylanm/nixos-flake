@@ -5,7 +5,13 @@
     enable = true;
     package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zigbee2mqtt;
     settings = {
-      homeassistant = true;
+      homeassistant = {
+        enabled = true;
+        experimental_event_entities = true;
+      };
+      availability = {
+        enabled = true;
+      };
       serial = {
         port = "/dev/serial/by-id/usb-ITead_Sonoff_Zigbee_3.0_USB_Dongle_Plus_6a21b96f1fe8ec118b107a60e89bdf6f-if00-port0";
         adapter = "zstack";
