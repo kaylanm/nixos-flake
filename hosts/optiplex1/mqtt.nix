@@ -6,7 +6,6 @@
     listeners = [
       {
         acl = [ "pattern readwrite #" ];
-        omitPasswordAuth = true;
         users = {
           DVES_USER = {
             hashedPasswordFile = "/etc/mosquitto/passwd";
