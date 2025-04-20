@@ -1,35 +1,8 @@
-{ lib, config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  config = {
-    environment.systemPackages = with pkgs; [
-      git
-      vim
-      neovim
-      curl
-      wget
-      bat
-      ripgrep
-      fzf
-      eza
-      fd
-      btop
-      tmux
-      screen
-      zip
-      unzip
-      xz
-      p7zip
-      lsof
-      nix-output-monitor
-      nix-tree
-      nixfmt-rfc-style
-    ] ++ lib.optionals pkgs.stdenv.isLinux [
-      usbutils
-      pciutils
-    ];
-    #++ lib.optionals config.withGUI [
-    #  nerdfonts
-    #];
-  };
+  environment.systemPackages = with pkgs; [
+    usbutils
+    pciutils
+  ];
 }
