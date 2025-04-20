@@ -1,9 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, pkgsUnstable, inputs, ... }:
 
 {
   services.zigbee2mqtt = {
     enable = true;
-    package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zigbee2mqtt;
+    package = pkgsUnstable.zigbee2mqtt;
     settings = {
       homeassistant = {
         enabled = true;

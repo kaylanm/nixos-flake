@@ -1,7 +1,7 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, pkgsUnstable, inputs, ... }:
 
 let
-  esphomePkg = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.esphome;
+  esphomePkg = pkgsUnstable.esphome;
 in
 {
   services.esphome = {
