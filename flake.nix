@@ -20,10 +20,6 @@
 
     colmena.url = "github:zhaofengli/colmena";
     colmena.inputs.nixpkgs.follows = "nixpkgs";
-
-    #ghostty.url = "github:ghostty-org/ghostty";
-    #ghostty.inputs.nixpkgs-stable.follows = "nixpkgs";
-    #ghostty.inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
@@ -47,6 +43,7 @@
           system = "x86_64-linux";
           modules = [
             ./hosts/elite1/configuration.nix
+            # home-manager.nixosModules.home-manager
           ] ++ modules.nixos;
         };
 
@@ -55,7 +52,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex1/configuration.nix
-            { _module.args = { inherit inputs; }; }
+            # sops-nix.nixosModules.sops
           ] ++ modules.nixos;
         };
 
@@ -64,6 +61,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex2/configuration.nix
+            # sops-nix.nixosModules.sops
           ] ++ modules.nixos;
         };
 
@@ -72,6 +70,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex3/configuration.nix
+            # sops-nix.nixosModules.sops
           ] ++ modules.nixos;
         };
 
@@ -80,6 +79,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/auriga-nixos/configuration.nix
+            # home-manager.nixosModules.home-manager
           ] ++ modules.nixos;
         };
 
@@ -88,50 +88,9 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/auriga/configuration.nix
+            # home-manager.nixosModules.home-manager
           ] ++ modules.nixos;
         };
-
-
-        # meteion = nixpkgs.lib.nixosSystem {
-        #   system = "x86_64-linux";
-        #   modules = [
-        #     ./hosts/meteion/configuration.nix
-        #     home-manager.nixosModules.home-manager
-        #     sops-nix.nixosModules.sops
-        #     { _module.args = { inherit inputs; }; }
-        #   ] ++ modules.nixos;
-        # };
-
-        # vamp = nixpkgs-unstable.lib.nixosSystem {
-        #   system = "aarch64-linux";
-        #   modules = [
-        #     ./hosts/vamp/configuration.nix
-        #     home-manager-unstable.nixosModules.home-manager
-        #     sops-nix.nixosModules.sops
-        #     { _module.args = { inherit inputs; }; }
-        #   ] ++ modules.nixos;
-        # };
-
-        # web-server = nixpkgs.lib.nixosSystem {
-        #   system = "x86_64-linux";
-        #   modules = [
-        #     ./hosts/web-server/configuration.nix
-        #     home-manager.nixosModules.home-manager
-        #     foundryvtt.nixosModules.foundryvtt
-        #     sops-nix.nixosModules.sops
-        #     { _module.args = { inherit inputs; }; }
-        #   ] ++ modules.nixos;
-        # };
-
-        # zhloe = nixpkgs.lib.nixosSystem {
-        #   system = "x86_64-linux";
-        #   modules = [
-        #     ./hosts/zhloe/configuration.nix
-        #     home-manager.nixosModules.home-manager
-        #     sops-nix.nixosModules.sops
-        #     { _module.args = { inherit inputs; }; }
-        #   ] ++ modules.nixos;
-        # };
       };
 
       colmena = {
@@ -144,14 +103,11 @@
       } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
 
       hmModules = {
-      #   reckenrode = {
-      #     imports = [ ./home-manager/reckenrode/home.nix ] ++ modules.home;
-      #     _module.args = { inherit inputs; };
-      #   };
-      #   server-admin = {
-      #     imports = [ ./home-manager/server-admin/home.nix ] ++ modules.home;
-      #     _module.args = { inherit inputs; };
-      #   };
+        mike = {
+          imports = [ ./home-manager/mike/home.nix ] ++ modules.home;
+          specialArgs = { inherit inputs; };
+          # _module.args = { inherit inputs; };
+        };
       };
     };
 }
