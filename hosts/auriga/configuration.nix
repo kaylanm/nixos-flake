@@ -70,6 +70,8 @@
     #media-session.enable = true;
   };
 
+  hardware.logitech.wireless.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -89,9 +91,11 @@
       kitty
       alacritty
       vscode
-      logiops
       _1password-gui
       ghostty
+      prismlauncher
+      discord
+      solaar
     ];
     shell = pkgs.fish;
   };
