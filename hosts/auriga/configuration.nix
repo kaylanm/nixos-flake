@@ -78,6 +78,10 @@
   programs.hyprland.enable = true;
   programs.sway.enable = true;
 
+  services.tailscale = {
+    enable = true;
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
     isNormalUser = true;
@@ -96,6 +100,11 @@
       prismlauncher
       discord
       solaar
+      steam
+      gnome-extensions-cli
+      gnomeExtensions.wintile-beyond
+      gnomeExtensions.just-perfection
+      gnomeExtensions.tophat
     ];
     shell = pkgs.fish;
   };
