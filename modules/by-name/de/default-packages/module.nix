@@ -2,42 +2,44 @@
 
 {
   environment.systemPackages = with pkgs; [
-    git
-    vim
-    neovim
-    curl
-    wget
     bat
-    ripgrep
-    silver-searcher
-    fzf
+    btop
+    curl
+    delta
+    difftastic
+    dig
+    dos2unix
+    dust
     eza
     fd
-    btop
-    tmux
-    screen
-    zip
-    unzip
-    xz
-    p7zip
-    zstd
-    jq
-    yq
-    watch
+    fzf
+    git
+    hexyl
     httpie
-    socat
-    netcat
+    jq
+    lazydocker
+    lazygit
     lsof
+    neovim
+    netcat
     nix-output-monitor
     nix-tree
     nixfmt-rfc-style
     ookla-speedtest
-    dos2unix
-    dust
-    lazydocker
-    lazygit
-    hexyl
-    difftastic
+    p7zip
+    ripgrep
+    screen
+    silver-searcher
+    socat
+    tmux
+    unzip
+    vim
+    watch
+    wget
+    xz
+    yq
+    zip
+    zstd
 
     # qmk
     # avrdude
@@ -93,5 +95,6 @@
   ]);
   #++ lib.optionals config.withGUI [
   #  nerdfonts
+  #  ghostty
   #];
 }

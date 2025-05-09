@@ -16,6 +16,10 @@
   environment.systemPackages = with pkgs; [
     inputs.colmena.packages.x86_64-linux.colmena
     pkgsUnstable.yt-dlp
+    ghostty
+    grc
+    fishPlugins.grc
+    fishPlugins.bobthefisher
   ];
 
   networking.hostName = "auriga-nixos";
