@@ -9,6 +9,7 @@
       ./esphome.nix
       ./hardware-configuration.nix
       ./home-assistant.nix
+      ./matter.nix
       ./mqtt.nix
       ./music-assistant.nix
       ./restic.nix
