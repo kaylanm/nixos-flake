@@ -7,6 +7,8 @@
   # environment.variables.EDITOR = "${lib.getExe pkgs.neovim}";
   # environment.variables.PAGER = "${lib.getExe pkgs.less} -RF";
 
+  # environment.shells = [ pkgs.fish ];
+
   # environment.systemPackages = lib.attrValues {
   #   inherit (pkgs) iterm2 ghostty;
   # };
@@ -16,9 +18,51 @@
   # };
 
   networking.hostName = "covenant";
+  networking.computerName = "Covenant";
 
   # security.pam.enableSudoTouchIdAuth = true;
 
+  homebrew.enable = true;
+  homebrew.casks = [
+    "1password"
+    "adobe-acrobat-reader"
+    "aerospace"
+    "alfred"
+    "amethyst"
+    "arc"
+    "arduino-ide"
+    "brave-browser"
+    "caffeine"
+    "discord"
+    "docker"
+    "emacs"
+    "firefox"
+    "font-fira-code-nerd-font"
+    "font-iosevka"
+    "font-iosevka-nerd-font"
+    "ghostty"
+    "google-chrome"
+    "iterm2"
+    "localsend"
+    "logseq"
+    "ngrok"
+    "notion"
+    "prismlauncher"
+    "rectangle"
+    "shortcat"
+    "spotify"
+    "sublime-text"
+    "via"
+    "vial"
+    "visual-studio-code"
+    "vlc"
+    "vmware-fusion"
+    "wireshark"
+    "zoom"
+  ];
+
+  homebrew.onActivation.update = true;
+  homebrew.onActivation.upgrade = true;
 
   programs.fish.enable = true;
 

@@ -93,7 +93,8 @@
   ] ++ (with pkgsUnstable; [
     ncdu
   ]);
-  #++ lib.optionals config.withGUI [
+
+  # fonts.packages = [] ++ lib.optionals config.withGUI [
   #  nerdfonts
   #  ghostty
   #];
