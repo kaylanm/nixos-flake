@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, pkgsUnstable, ... }:
 
 {
   imports =
@@ -46,10 +46,12 @@
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
-    open = false;
+    open = true;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
+  boot.kernelPackages = pkgsUnstable.linuxPackages;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -90,6 +92,7 @@
     packages = with pkgs; [
       firefox
       google-chrome
+      brave
       spotify
       wofi
       kitty
