@@ -4,12 +4,13 @@
   services.restic.backups = {
     optiplex2 = {
       initialize = true;
-      repository = "rest:https://l9de4zro:35TurEpMF3PgUB38@l9de4zro.repo.borgbase.com";
       paths = [
-        "/var/lib/minecraft-servers/**/world"
+        "/var/lib/minecraft-servers/**/world**"
         "/var/lib/bedrock-server/worlds"
       ];
+      repositoryFile = "/etc/restic-repository";
       passwordFile = "/etc/restic-password";
+      environmentFile = "/etc/restic-env";
       timerConfig = {
         OnCalendar = "0/6:00"; # every 6 hours
         Persistent = true;
