@@ -4,11 +4,12 @@
   services.restic.backups = {
     optiplex1 = {
       initialize = true;
-      repository = "rest:https://w5t0q43x:DMRHt6Q1zmnlY0KR@w5t0q43x.repo.borgbase.com";
       paths = [
         "/var/lib/home-assistant"
       ];
+      repositoryFile = "/etc/restic-repository";
       passwordFile = "/etc/restic-password";
+      environmentFile = "/etc/restic-env";
       timerConfig = {
         OnCalendar = "daily";
         Persistent = true;
