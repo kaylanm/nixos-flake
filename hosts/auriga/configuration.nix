@@ -55,6 +55,22 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = with pkgs; [ brlaser ];
+
+  hardware.printers.ensurePrinters = [
+    {
+      name = "Brother-MFC-7460DN";
+      deviceUri = "http://BRN001BA9AC6D3D.home:631";
+      model = "drv:///brlaser.drv/br7460d.ppd";
+      ppdOptions = {
+        media = "na_letter_8.5x11in";
+        sides = "one-sided";
+        job-sheets = "none, none";
+      };
+    }
+  ];
+
+  hardware.printers.ensureDefaultPrinter = "Brother-MFC-7460DN";
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -79,6 +95,7 @@
 
   programs.hyprland.enable = true;
   programs.sway.enable = true;
+  programs.localsend.enable = true;
 
   services.tailscale = {
     enable = true;
