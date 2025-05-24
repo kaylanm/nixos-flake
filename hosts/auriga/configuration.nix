@@ -59,7 +59,7 @@
 
   hardware.printers.ensurePrinters = [
     {
-      name = "Brother-MFC-7460DN";
+      name = "Brother_MFC-7460DN";
       deviceUri = "http://BRN001BA9AC6D3D.home:631";
       model = "drv:///brlaser.drv/br7460d.ppd";
       ppdOptions = {
@@ -70,7 +70,7 @@
     }
   ];
 
-  hardware.printers.ensureDefaultPrinter = "Brother-MFC-7460DN";
+  hardware.printers.ensureDefaultPrinter = "Brother_MFC-7460DN";
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
