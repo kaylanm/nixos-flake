@@ -13,6 +13,13 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.windows = {
+    "nvme0n1p1" = {
+      title = "Windows 11";
+      efiDeviceHandle = "FS0";
+      sortKey = "a_windows";
+    };
+  };
 
   networking.hostName = "auriga"; # Define your hostname.
 
