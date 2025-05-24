@@ -12,6 +12,7 @@
       ./matter.nix
       ./mqtt.nix
       ./music-assistant.nix
+      ./printing.nix
       ./restic.nix
       ./ups.nix
       ./zigbee2mqtt.nix
