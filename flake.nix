@@ -41,6 +41,7 @@
       nixosConfigurations = {
         elite1 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/elite1/configuration.nix
             # home-manager.nixosModules.home-manager
