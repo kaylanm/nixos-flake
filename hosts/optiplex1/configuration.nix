@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./home-assistant.nix
       ./matter.nix
+      ./meshcentral.nix
       ./mqtt.nix
       ./music-assistant.nix
       ./printing.nix
