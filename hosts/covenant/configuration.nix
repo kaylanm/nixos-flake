@@ -22,6 +22,8 @@
 
   # security.pam.enableSudoTouchIdAuth = true;
 
+  system.primaryUser = "mike";
+
   homebrew.enable = true;
   homebrew.casks = [
     "1password"
@@ -61,7 +63,7 @@
     "zoom"
   ];
 
-  homebrew.onActivation.update = true;
+  homebrew.onActivation.autoUpdate = true;
   homebrew.onActivation.upgrade = true;
 
   programs.fish.enable = true;
