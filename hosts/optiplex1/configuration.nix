@@ -9,6 +9,7 @@
       ./esphome.nix
       ./hardware-configuration.nix
       ./home-assistant.nix
+      ./karakeep.nix
       ./matter.nix
       ./meshcentral.nix
       ./mqtt.nix
