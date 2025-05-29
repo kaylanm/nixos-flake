@@ -16,7 +16,7 @@
   boot.loader.systemd-boot.windows = {
     "nvme0n1p1" = {
       title = "Windows 11";
-      efiDeviceHandle = "FS0";
+      efiDeviceHandle = "FS2";
       sortKey = "a_windows";
     };
   };
