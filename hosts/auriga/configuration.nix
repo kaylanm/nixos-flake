@@ -103,6 +103,10 @@
   programs.hyprland.enable = true;
   programs.sway.enable = true;
   programs.localsend.enable = true;
+  programs.steam = {
+    enable = true;
+    package = pkgsUnstable.steam;
+  };
 
   services.tailscale = {
     enable = true;
@@ -127,7 +131,6 @@
       prismlauncher
       discord
       solaar
-      steam
       gnome-extensions-cli
       gnomeExtensions.wintile-beyond
       gnomeExtensions.just-perfection
