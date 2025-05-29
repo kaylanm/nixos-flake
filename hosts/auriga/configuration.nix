@@ -132,7 +132,16 @@
       discord
       solaar
       gnome-extensions-cli
-      gnomeExtensions.wintile-beyond
+
+      (gnomeExtensions.wintile-beyond.overrideAttrs {
+        src = pkgs.fetchFromGitHub {
+          owner = "GrylledCheez";
+          repo = "wintile-beyond";
+          rev = "6c13592c9df9cbb23f33821f837a13bbccab1e79";
+          sha256 = "sha256-yLPxzebc70e/d5KBRrluu4DMz6ZR6Sx+CGXfsXgwy8E=";
+        };
+      })
+
       gnomeExtensions.just-perfection
       gnomeExtensions.tophat
     ];
