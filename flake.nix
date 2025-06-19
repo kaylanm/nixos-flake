@@ -15,6 +15,9 @@
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -22,7 +25,7 @@
     colmena.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, nixos-hardware, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
     let
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
     in
@@ -91,6 +94,15 @@
             ./hosts/auriga/configuration.nix
             # home-manager.nixosModules.home-manager
           ] ++ modules.nixos;
+        };
+
+        pi4 = nixpkgs.lib.nixosSystem {
+          system = "aarch64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/pi4/configuration.nix
+            nixos-hardware.nixosModules.raspberry-pi-4
+          ];
         };
       };
 
