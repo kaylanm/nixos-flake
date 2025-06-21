@@ -8,6 +8,8 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./octoprint.nix
+      ./ustreamer.nix
     ];
 
   # Use the extlinux boot loader. (NixOS wants to enable GRUB by default)
@@ -62,6 +64,10 @@
     wget
     curl
     git
+    bat
+    ripgrep
+    libraspberrypi
+    raspberrypi-eeprom
   ];
 
   services.openssh.enable = true;
