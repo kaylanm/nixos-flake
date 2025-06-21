@@ -20,6 +20,7 @@
     grc
     fishPlugins.grc
     fishPlugins.bobthefisher
+    python3
   ];
 
   networking.hostName = "auriga-nixos";
