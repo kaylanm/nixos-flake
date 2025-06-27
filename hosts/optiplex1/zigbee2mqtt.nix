@@ -3,8 +3,17 @@
 {
   services.zigbee2mqtt = {
     enable = true;
-    package = pkgsUnstable.zigbee2mqtt;
+    package = pkgsUnstable.zigbee2mqtt_2;
     settings = {
+      advanced = {
+        homeassistant_legacy_entity_attributes = false;
+        homeassistant_legacy_triggers = false;
+        legacy_api = false;
+        legacy_availability_payload = false;
+      };
+      device_options = {
+        legacy = false;
+      };
       homeassistant = {
         enabled = true;
         experimental_event_entities = true;
