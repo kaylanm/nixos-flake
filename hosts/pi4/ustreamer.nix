@@ -6,7 +6,6 @@
     extraArgs = [
       "--encoder=HW"
       "--persistent"
-      "--drop-same-frames=30"
     ];
   };
 
