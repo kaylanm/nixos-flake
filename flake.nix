@@ -100,6 +100,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/pi4/configuration.nix
+            ./modules/by-name/un/unstable/module.nix
             nixos-hardware.nixosModules.raspberry-pi-4
           ];
         };

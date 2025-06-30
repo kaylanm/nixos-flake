@@ -8,6 +8,9 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./klipper
+      ./mainsail.nix
+      ./moonraker.nix
       ./octoprint.nix
       ./ustreamer.nix
     ];
@@ -66,6 +69,7 @@
     git
     bat
     ripgrep
+    usbutils
     libraspberrypi
     raspberrypi-eeprom
   ];
