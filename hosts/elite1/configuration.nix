@@ -50,8 +50,21 @@
   };
 
   programs.hyprland.enable = true;
+  programs.nix-ld.enable = true;
 
   services.udev.packages = with pkgs; [ via vial ];
+
+  environment.systemPackages = with pkgs; [
+    firefox
+    google-chrome
+    kitty
+    via
+    vial
+    alacritty
+    ghostty
+    prismlauncher
+    localsend
+  ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
@@ -59,20 +72,11 @@
     description = "Michael Kaylan";
     extraGroups = [ "networkmanager" "wheel" "dialout" ];
     packages = with pkgs; [
-      firefox
-      google-chrome
-      kitty
-      via
-      vial
       killall
       pciutils
       usbutils
       wofi
-      alacritty
       gparted
-      ghostty
-      prismlauncher
-      localsend
       #lrzsz
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
@@ -88,6 +92,26 @@
           #dustypomerleau.rust-syntax
         ];
       })
+    ];
+    shell = pkgs.fish;
+  };
+
+  users.users.ryan = {
+    isNormalUser = true;
+    description = "Ryan Kaylan";
+    extraGroups = [ "networkmanager" ];
+    packages = with pkgs; [
+
+    ];
+    shell = pkgs.fish;
+  };
+
+  users.users.alex = {
+    isNormalUser = true;
+    description = "Alex Kaylan";
+    extraGroups = [ "networkmanager" ];
+    packages = with pkgs; [
+      gcompris
     ];
     shell = pkgs.fish;
   };
