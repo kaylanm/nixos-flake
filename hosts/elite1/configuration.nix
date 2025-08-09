@@ -49,6 +49,17 @@
     #media-session.enable = true;
   };
 
+  programs.dconf = {
+    enable = true;
+    profiles.user.databases = [{
+      settings = with lib.gvariant; {
+        "org/gnome/mutter" = {
+          check-alive-timeout = mkUint32 60000;
+        };
+      };
+    }];
+  };
+
   programs.hyprland.enable = true;
   programs.nix-ld.enable = true;
 
