@@ -7,7 +7,9 @@
       ./backup.nix
       ./minecraft-server.nix
       ./minecraft-server-bedrock.nix
+      ./minecraft-server-atm9tts.nix
       ./minecraft-server-atm10.nix
+      ./minecraft-server-atm10tts.nix
       ./minecraft-server-stoneblock3.nix
       ./minecraft-server-oceanblock2.nix
     ];
