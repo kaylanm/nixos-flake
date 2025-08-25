@@ -15,6 +15,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  #networking.firewall.enable = false;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -61,6 +62,7 @@
   };
 
   programs.hyprland.enable = true;
+  programs.localsend.enable = true;
   programs.nix-ld.enable = true;
 
   services.udev.packages = with pkgs; [ via vial ];
@@ -74,7 +76,6 @@
     alacritty
     ghostty
     prismlauncher
-    localsend
   ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
