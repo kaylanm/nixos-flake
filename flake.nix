@@ -17,6 +17,8 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+    nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.6.0";
+
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -24,7 +26,7 @@
     colmena.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, nixos-hardware, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, nixos-hardware, nix-flatpak, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
     let
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
     in
@@ -46,6 +48,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/elite1/configuration.nix
+            nix-flatpak.nixosModules.nix-flatpak
             # home-manager.nixosModules.home-manager
           ] ++ modules.nixos;
         };

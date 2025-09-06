@@ -50,6 +50,13 @@
     #media-session.enable = true;
   };
 
+  services.flatpak = {
+    enable = true;
+    packages = [
+      "org.vinegarhq.Sober"
+    ];
+  };
+
   programs.dconf = {
     enable = true;
     profiles.user.databases = [{
