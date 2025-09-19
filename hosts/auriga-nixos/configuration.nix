@@ -13,15 +13,19 @@
 
   programs.nix-ld.enable = true;
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = (with pkgs; [
     inputs.colmena.packages.x86_64-linux.colmena
-    pkgsUnstable.yt-dlp
     ghostty
     grc
     fishPlugins.grc
     fishPlugins.bobthefisher
     python3
-  ];
+  ]) ++ (with pkgsUnstable; [
+    yt-dlp
+    claude-code
+    gemini-cli
+    codex
+  ]);
 
   networking.hostName = "auriga-nixos";
   networking.firewall.enable = false;
