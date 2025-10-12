@@ -12,7 +12,7 @@
     '';
     package = pkgsUnstable.caddy.withPlugins {
       plugins = [ "github.com/tailscale/caddy-tailscale@v0.0.0-20250207163903-69a970c84556" ];
-      hash = "sha256-TS5Ym3jHa2H2fmwV/QYoZRk7yEE+UWIcyabhhRQQrUM=";
+      hash = "sha256-sFXQcvAGGt9ulCoiH3vqHPNk+zxgRtCXH4V/0ng/UhQ=";
     };
   };
 
