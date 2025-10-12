@@ -3,6 +3,7 @@
 {
   services.caddy = {
     enable = true;
+    enableReload = false;
     environmentFile = "/etc/caddy/environment";
     globalConfig = ''
       tailscale {
