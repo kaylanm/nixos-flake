@@ -21,10 +21,11 @@
     fishPlugins.bobthefisher
     python3
   ]) ++ (with pkgsUnstable; [
-    yt-dlp
     claude-code
-    gemini-cli
     codex
+    gemini-cli
+    opencode
+    yt-dlp
   ]);
 
   networking.hostName = "auriga-nixos";
