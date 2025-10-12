@@ -8,6 +8,10 @@
   services.caddy.virtualHosts."https://meshcentral.manx-in.ts.net".extraConfig = ''
     bind tailscale/meshcentral
 
-    reverse_proxy :3000
+    reverse_proxy https://localhost:1025 {
+      transport http {
+        tls_insecure_skip_verify
+      }
+    }
   '';
 }
