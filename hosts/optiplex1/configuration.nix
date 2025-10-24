@@ -10,6 +10,7 @@
       ./hardware-configuration.nix
       ./home-assistant.nix
       ./immich.nix
+      ./linkwarden.nix
       ./matter.nix
       ./meshcentral.nix
       ./mqtt.nix
