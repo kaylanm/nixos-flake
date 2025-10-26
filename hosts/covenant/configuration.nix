@@ -24,6 +24,48 @@
 
   system.primaryUser = "mike";
 
+  system.defaults.NSGlobalDomain = {
+    AppleKeyboardUIMode = 3; # Enable tabbing through UI elements.
+    AppleShowAllExtensions = true;
+    AppleInterfaceStyle = "Dark";
+    # AppleAquaColorVariant = 1;
+    ApplePressAndHoldEnabled = false;
+    # AppleMiniaturizeOnDoubleClick = 0;
+    AppleWindowTabbingMode = "always";
+    "com.apple.trackpad.forceClick" = false;
+  };
+
+  system.defaults.WindowManager = {
+    EnableStandardClickToShowDesktop = false;
+    EnableTiledWindowMargins = false;
+  };
+
+  system.defaults.controlcenter = {
+    BatteryShowPercentage = true;
+  };
+
+  system.defaults.dock = {
+    autohide = true;
+    mineffect = "scale";
+  };
+
+  system.defaults.finder = {
+    FXPreferredViewStyle = "Nlsv";
+    NewWindowTarget = "Home";
+    ShowHardDrivesOnDesktop = true;
+    ShowMountedServersOnDesktop = true;
+    #ShowPathBar = true;
+    ShowStatusBar = true;
+  };
+
+  system.defaults.loginwindow = {
+    GuestEnabled = false;
+  };
+
+  system.defaults.trackpad = {
+    Clicking = true;
+  };
+
   homebrew.enable = true;
   homebrew.casks = [
     "1password"
