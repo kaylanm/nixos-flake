@@ -92,7 +92,7 @@
 
     # yt-dlp
   ] ++ (with pkgsUnstable; [
-    ncdu
+    # ncdu # zig-hook marked broken
   ]);
 
   # fonts.packages = [] ++ lib.optionals config.withGUI [
