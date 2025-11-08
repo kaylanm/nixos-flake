@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgsUnstable, ... }:
 
 {
   imports =
     [
       ./acme.nix
-      ./caddy.nix
+      #./caddy.nix
       ./code-server.nix
       ./esphome.nix
       ./hardware-configuration.nix
@@ -52,6 +52,7 @@
 
   services.tailscale = {
     enable = true;
+    package = pkgsUnstable.tailscale;
     useRoutingFeatures = "server";
   };
 
