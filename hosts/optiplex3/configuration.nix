@@ -1,9 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, pkgsUnstable, ... }:
 
 {
   imports =
     [
       ./hardware-configuration.nix
+      ./memos.nix
+      #./synapse.nix
+      ./paperless.nix
     ];
 
   # Bootloader.
@@ -34,6 +37,7 @@
 
   services.tailscale = {
     enable = true;
+    package = pkgsUnstable.tailscale;
     useRoutingFeatures = "server";
   };
 
