@@ -17,6 +17,8 @@
     };
   };
 
+  users.users.mike.extraGroups = [ "scanner" ];
+
   services.avahi = {
     enable = true;
   };
