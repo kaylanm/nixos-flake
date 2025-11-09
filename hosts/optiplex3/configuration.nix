@@ -5,8 +5,9 @@
     [
       ./hardware-configuration.nix
       ./memos.nix
-      #./synapse.nix
       ./paperless.nix
+      ./sane.nix
+      #./synapse.nix
     ];
 
   # Bootloader.
