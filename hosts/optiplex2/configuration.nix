@@ -12,7 +12,9 @@
       ./minecraft-server-atm10tts.nix
       ./minecraft-server-monifactory.nix
       ./minecraft-server-stoneblock3.nix
+      ./minecraft-server-stoneblock4.nix
       ./minecraft-server-oceanblock2.nix
+      ./minecraft-server-tekxit4.nix
     ];
 
   # Bootloader.

@@ -15,5 +15,6 @@
         "ATM10_JAVA=${pkgs.jdk21}/bin/java"
       ];
     };
+    path = [ pkgs.wget ];
   };
 }
