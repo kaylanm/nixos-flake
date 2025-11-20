@@ -19,7 +19,7 @@ let
         (attrNames (readDir path)));
   
   # Import all packages from subdirectories
-  packagesList = if builtins.pathExists ./. then getDirs ./ else [];
+  packagesList = if builtins.pathExists ./. then getDirs ./. else [];
   
   # Create an attribute set with all packages
   packages = builtins.listToAttrs

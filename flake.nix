@@ -31,6 +31,8 @@
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
     in
     rec {
+      overlays.default = import ./overlays/default.nix;
+
       darwinConfigurations = {
         covenant = nix-darwin.lib.darwinSystem {
           system = "x86_64-darwin";
