@@ -29,8 +29,15 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, nix-darwin, nixos-hardware, nix-flatpak, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
     let
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
+
+      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     rec {
+      packages = forAllSystems (system: import ./pkgs {
+        callPackage = nixpkgs.legacyPackages.${system}.callPackage;
+      });
+
       overlays.default = import ./overlays/default.nix;
 
       darwinConfigurations = {
