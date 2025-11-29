@@ -8,6 +8,7 @@
   netpbm,
   parallel,
   poppler-utils,
+  sane-frontends,
   stdenv,
   tesseract,
   units,
@@ -23,6 +24,7 @@ let
     netpbm
     parallel
     poppler-utils
+    sane-frontends
     tesseract
     units
     unpaper
