@@ -111,6 +111,7 @@
 
   services.tailscale = {
     enable = true;
+    package = pkgsUnstable.tailscale;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
