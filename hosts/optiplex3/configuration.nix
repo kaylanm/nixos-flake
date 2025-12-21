@@ -4,7 +4,9 @@
   imports =
     [
       ./hardware-configuration.nix
+      ./homebox.nix
       ./memos.nix
+      ./netboot.nix
       ./paperless.nix
       ./sane.nix
       #./synapse.nix
