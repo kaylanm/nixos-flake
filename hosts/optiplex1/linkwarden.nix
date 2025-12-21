@@ -1,10 +1,6 @@
 { config, pkgs, pkgsUnstable, inputs, ... }:
 
 {
-  imports = [
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/web-apps/linkwarden.nix"
-  ];
-
   services.linkwarden = {
     enable = true;
     enableRegistration = true;
