@@ -49,6 +49,15 @@
             # home-manager.darwinModules.home-manager
           ] ++ modules.darwin;
         };
+
+        nostromo = nix-darwin.lib.darwinSystem {
+          system = "x86_64-darwin";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/nostromo/configuration.nix
+            # home-manager.darwinModules.home-manager
+          ] ++ modules.darwin;
+        };
       };
 
       nixosConfigurations = {
