@@ -32,6 +32,36 @@
     variant = "";
   };
 
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = true;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # Disable iGPU
+  boot.blacklistedKernelModules = [
+    "i915"
+  ];
+  boot.kernelParams = [
+    "i915.modeset=0"
+    "snd_hda_core.gpu_bind=0"
+  ];
+
+  # Disable nVidia HDMI audio out
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x10de", ATTR{class}=="0x040300", ATTR{power/control}=="auto", ATTR{remove}="1"
+  '';
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -73,6 +103,7 @@
   programs.hyprland.enable = true;
   programs.localsend.enable = true;
   programs.nix-ld.enable = true;
+  programs.steam.enable = true;
 
   services.udev.packages = with pkgs; [ via vial ];
 
