@@ -170,6 +170,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.settings.X11Forwarding = true;
 
   system.stateVersion = "23.11";
 }
