@@ -6,7 +6,7 @@
     containers = {
       homeAssistant = {
         environment.TZ = "America/New_York";
-        image = "ghcr.io/home-assistant/home-assistant:2026.1.0";
+        image = "ghcr.io/home-assistant/home-assistant:2026.1.2";
         extraOptions = [
           "--network=host"
         ];
