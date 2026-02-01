@@ -137,9 +137,9 @@
 
       (gnomeExtensions.wintile-beyond.overrideAttrs {
         src = pkgs.fetchFromGitHub {
-          owner = "GrylledCheez";
+          owner = "kaylanm";
           repo = "wintile-beyond";
-          rev = "6c13592c9df9cbb23f33821f837a13bbccab1e79";
+          rev = "44e2343e617b7ef1f64bc548636127f5b8c1ba9f";
           sha256 = "sha256-yLPxzebc70e/d5KBRrluu4DMz6ZR6Sx+CGXfsXgwy8E=";
         };
       })
