@@ -20,6 +20,7 @@
     jq
     lazydocker
     lazygit
+    lshw
     lsof
     neovim
     netcat
