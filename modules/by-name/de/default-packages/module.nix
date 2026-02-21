@@ -22,6 +22,7 @@
     lazygit
     lshw
     lsof
+    mosh
     neovim
     netcat
     nix-output-monitor
