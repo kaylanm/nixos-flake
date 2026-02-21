@@ -20,7 +20,6 @@
     jq
     lazydocker
     lazygit
-    lshw
     lsof
     mosh
     neovim

@@ -2,7 +2,8 @@
 
 {
   environment.systemPackages = with pkgs; [
-    usbutils
+    lshw
     pciutils
+    usbutils
   ];
 }
