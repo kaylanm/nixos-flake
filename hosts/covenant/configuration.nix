@@ -1,4 +1,4 @@
-{ lib, config, pkgs, inputs, ... }:
+{ lib, config, pkgs, pkgsUnstable, inputs, ... }:
 
 {
   environment.darwinConfig = inputs.self + /hosts/covenant/configuration.nix;
@@ -112,10 +112,11 @@
   homebrew.onActivation.upgrade = true;
 
   programs.fish.enable = true;
+  programs.fish.package = pkgsUnstable.fish;
 
   users.users.mike = {
     description = "Michael Kaylan";
-    shell = pkgs.fish;
+    shell = pkgsUnstable.fish;
     home = "/Users/mike";
   };
 

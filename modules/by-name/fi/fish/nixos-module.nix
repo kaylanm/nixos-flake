@@ -1,8 +1,11 @@
-{ lib, config, pkgs, ... }:
+{ pkgsUnstable, ... }:
 
 {
-  programs.fish.enable = true;
-  programs.fish.useBabelfish = true;
+  programs.fish = {
+    enable = true;
+    package = pkgsUnstable.fish;
+    useBabelfish = true;
+  };
 
-  users.users.root.shell = pkgs.fish;
+  users.users.root.shell = pkgsUnstable.fish;
 }
