@@ -7,6 +7,7 @@
       ./backup.nix
       ./minecraft-server.nix
       ./minecraft-server-bedrock.nix
+      ./minecraft-server-allthemons.nix
       ./minecraft-server-atm9tts.nix
       ./minecraft-server-atm10.nix
       ./minecraft-server-atm10tts.nix
