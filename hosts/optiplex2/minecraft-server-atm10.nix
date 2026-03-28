@@ -14,6 +14,8 @@
         "ATM10_RESTART=false"
         "ATM10_JAVA=${pkgs.jdk21}/bin/java"
       ];
+      Restart = "always";
+      RuntimeMaxSec = "1d";
     };
   };
 }
