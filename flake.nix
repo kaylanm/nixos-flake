@@ -107,7 +107,7 @@
           ] ++ modules.nixos;
         };
 
-        auriga = nixpkgs.lib.nixosSystem {
+        auriga = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
