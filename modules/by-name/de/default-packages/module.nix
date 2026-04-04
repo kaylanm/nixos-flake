@@ -26,7 +26,7 @@
     netcat
     nix-output-monitor
     nix-tree
-    nixfmt-rfc-style
+    nixfmt
     ookla-speedtest
     p7zip
     ripgrep
