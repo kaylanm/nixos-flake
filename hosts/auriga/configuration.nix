@@ -101,6 +101,10 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  services.squeezelite = {
+    enable = true;
+  };
+
   programs.dms-shell = {
     enable = true;
     systemd = {
@@ -117,7 +121,7 @@
 
   services.displayManager.dms-greeter = {
     enable = true;
-    compositor.name = "hyprland";
+    compositor.name = "niri";
   };
 
   programs.hyprland = {
@@ -152,6 +156,7 @@
       kitty
       alacritty
       vscode
+      fastfetch
       _1password-gui
       ghostty
       prismlauncher
