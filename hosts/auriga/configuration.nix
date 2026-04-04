@@ -33,7 +33,7 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
+  #services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -101,8 +101,32 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  programs.hyprland.enable = true;
+  programs.dms-shell = {
+    enable = true;
+    systemd = {
+      enable = true;
+      restartIfChanged = true;
+    };
+
+    enableSystemMonitoring = true;
+    enableDynamicTheming = true;
+    enableClipboardPaste = true;
+  };
+
+  programs.dsearch.enable = true;
+
+  services.displayManager.dms-greeter = {
+    enable = true;
+    compositor.name = "hyprland";
+  };
+
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+  };
+
   programs.sway.enable = true;
+  programs.niri.enable = true;
   programs.localsend.enable = true;
   programs.steam = {
     enable = true;
@@ -134,13 +158,14 @@
       discord
       solaar
       gnome-extensions-cli
+      bibata-cursors
 
       (gnomeExtensions.wintile-beyond.overrideAttrs {
         src = pkgs.fetchFromGitHub {
           owner = "kaylanm";
           repo = "wintile-beyond";
-          rev = "44e2343e617b7ef1f64bc548636127f5b8c1ba9f";
-          sha256 = "sha256-yLPxzebc70e/d5KBRrluu4DMz6ZR6Sx+CGXfsXgwy8E=";
+          rev = "3e0678eddd2375d722e46fd4eca46e551cfc6152";
+          sha256 = "sha256-Cm9EqKAl5I797QlUp2MOGb2em8C1CSc0pDrQX+UWAiA=";
         };
       })
 
