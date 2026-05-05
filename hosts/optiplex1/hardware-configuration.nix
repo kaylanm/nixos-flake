@@ -31,7 +31,7 @@
 
   fileSystems."/var/lib/immich" =
     { device = "/data/immich";
-      fsType = "ext4";
+      fsType = "none";
       options = [ "bind" ];
     };
 
