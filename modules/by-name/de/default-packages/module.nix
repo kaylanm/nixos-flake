@@ -40,6 +40,7 @@
     wget
     xz
     yq
+    zellij
     zip
     zstd
 
