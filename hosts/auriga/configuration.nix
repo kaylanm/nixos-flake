@@ -101,10 +101,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.squeezelite = {
-    enable = true;
-  };
-
   programs.dms-shell = {
     enable = true;
     systemd = {
@@ -121,7 +117,19 @@
 
   services.displayManager.dms-greeter = {
     enable = true;
+    configHome = "/home/mike";
     compositor.name = "niri";
+    compositor.customConfig = ''
+      output "DP-1" {
+        mode "5120x1440@239.761"
+        scale 1
+        position x=0 y=0
+      }
+
+      hotkey-overlay {
+        skip-at-startup
+      }
+    '';
   };
 
   programs.hyprland = {
