@@ -1,7 +1,7 @@
-{ config, pkgs, pkgsUnstable, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
-  esphomePkg = pkgsUnstable.esphome;
+  esphomePkg = pkgs.esphome;
 in
 {
   services.esphome = {

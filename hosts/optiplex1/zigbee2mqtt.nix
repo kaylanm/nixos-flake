@@ -1,9 +1,9 @@
-{ config, pkgs, pkgsUnstable, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   services.zigbee2mqtt = {
     enable = true;
-    package = pkgsUnstable.zigbee2mqtt_2;
+    package = pkgs.zigbee2mqtt_2;
     settings = {
       advanced = {
         homeassistant_legacy_entity_attributes = false;

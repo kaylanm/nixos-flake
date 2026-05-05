@@ -1,8 +1,7 @@
-{ config, pkgs, pkgsUnstable, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   services.matter-server = {
     enable = true;
-    package = pkgsUnstable.python-matter-server;
   };
 }

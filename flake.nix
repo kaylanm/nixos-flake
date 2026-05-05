@@ -71,7 +71,7 @@
           ] ++ modules.nixos;
         };
 
-        optiplex1 = nixpkgs.lib.nixosSystem {
+        optiplex1 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [

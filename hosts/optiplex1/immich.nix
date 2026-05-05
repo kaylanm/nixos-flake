@@ -1,9 +1,8 @@
-{ config, pkgs, pkgsUnstable, ... }:
+{ config, pkgs, ... }:
 
 {
   services.immich = {
     enable = true;
-    package = pkgsUnstable.immich;
     machine-learning = {
       enable = false;
     };

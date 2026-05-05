@@ -1,4 +1,4 @@
-{ config, pkgs, pkgsUnstable, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   services.linkwarden = {
@@ -7,7 +7,6 @@
     environment = {
       NEXTAUTH_URL = "https://linkwarden.manx-in.ts.net";
     };
-    package = pkgsUnstable.linkwarden;
     port = 2293;
     secretFiles = {
       NEXTAUTH_SECRET = "/etc/nextauth-secret";
