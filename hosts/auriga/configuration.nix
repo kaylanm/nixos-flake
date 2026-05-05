@@ -145,6 +145,10 @@
     package = pkgsUnstable.steam;
   };
 
+  services.openssh = {
+    enable = true;
+  };
+
   services.tailscale = {
     enable = true;
     package = pkgsUnstable.tailscale;
