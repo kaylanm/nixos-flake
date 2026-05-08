@@ -14,7 +14,7 @@
         "ExInfernum:2533274799590022,Zavazone:2535423916767720,LunarCart175331:2535415429916730,TulinShark:2535464932198448,GreenBeastPug:2535459915268742,Nightowl7134:2535458962919233";
         OPS = "2533274799590022,2535415429916730,2535464932198448,2535459915268742,2535458962919233";
       };
-      image = "itzg/minecraft-bedrock-server:2024.11.0";
+      image = "itzg/minecraft-bedrock-server:2026.5.0";
       ports = [ "0.0.0.0:19132:19132/udp" ];
       volumes = [ "/var/lib/bedrock-server:/data" ];
     };
