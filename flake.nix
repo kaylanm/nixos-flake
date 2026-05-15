@@ -71,6 +71,15 @@
           ] ++ modules.nixos;
         };
 
+        elite2 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/elite2/configuration.nix
+            # home-manager.nixosModules.home-manager
+          ] ++ modules.nixos;
+        };
+
         optiplex1 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
