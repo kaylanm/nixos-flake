@@ -1,7 +1,13 @@
 # NixOS-WSL specific options are documented on the NixOS-WSL repository:
 # https://github.com/nix-community/NixOS-WSL
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  pkgsMaster,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -13,21 +19,24 @@
 
   programs.nix-ld.enable = true;
 
-  environment.systemPackages = (with pkgs; [
-    claude-code
-    codex
-    fishPlugins.grc
-    fishPlugins.bobthefisher
-    gemini-cli
-    ghostty
-    grc
-    inputs.colmena.packages.x86_64-linux.colmena
-    opencode
-    python3
-    sane-frontends
-    xsane
-    yt-dlp
-  ]);
+  environment.systemPackages =
+    (with pkgs; [
+      fishPlugins.grc
+      fishPlugins.bobthefisher
+      ghostty
+      grc
+      inputs.colmena.packages.x86_64-linux.colmena
+      python3
+      sane-frontends
+      xsane
+    ])
+    ++ (with pkgsMaster; [
+      claude-code
+      codex
+      gemini-cli
+      opencode
+      yt-dlp
+    ]);
 
   hardware.sane = {
     enable = true;
