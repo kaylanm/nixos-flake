@@ -2,14 +2,20 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, pkgsUnstable, ... }:
+{
+  config,
+  pkgs,
+  pkgsMaster,
+  pkgsUnstable,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./fix-modules.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./fix-modules.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -48,7 +54,7 @@
     enable32Bit = true;
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -158,37 +164,49 @@
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-      google-chrome
-      brave
-      spotify
-      wofi
-      kitty
-      alacritty
-      vscode
-      fastfetch
-      _1password-gui
-      ghostty
-      prismlauncher
-      discord
-      solaar
-      gnome-extensions-cli
-      bibata-cursors
-
-      (gnomeExtensions.wintile-beyond.overrideAttrs {
-        src = pkgs.fetchFromGitHub {
-          owner = "kaylanm";
-          repo = "wintile-beyond";
-          rev = "3e0678eddd2375d722e46fd4eca46e551cfc6152";
-          sha256 = "sha256-Cm9EqKAl5I797QlUp2MOGb2em8C1CSc0pDrQX+UWAiA=";
-        };
-      })
-
-      gnomeExtensions.just-perfection
-      gnomeExtensions.tophat
+    extraGroups = [
+      "networkmanager"
+      "wheel"
     ];
+    packages =
+      with pkgs;
+      [
+        _1password-gui
+        alacritty
+        bibata-cursors
+        brave
+        discord
+        fastfetch
+        firefox
+        ghostty
+        gnome-extensions-cli
+        google-chrome
+        kitty
+        prismlauncher
+        solaar
+        spotify
+        wofi
+        vscode
+
+        (gnomeExtensions.wintile-beyond.overrideAttrs {
+          src = pkgs.fetchFromGitHub {
+            owner = "kaylanm";
+            repo = "wintile-beyond";
+            rev = "3e0678eddd2375d722e46fd4eca46e551cfc6152";
+            sha256 = "sha256-Cm9EqKAl5I797QlUp2MOGb2em8C1CSc0pDrQX+UWAiA=";
+          };
+        })
+
+        gnomeExtensions.just-perfection
+        gnomeExtensions.tophat
+      ]
+      ++ (with pkgsMaster; [
+        claude-code
+        codex
+        gemini-cli
+        opencode
+        yt-dlp
+      ]);
     shell = pkgs.fish;
   };
 
