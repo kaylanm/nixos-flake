@@ -1,4 +1,4 @@
-{ config, pkgs, pkgsUnstable, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -47,7 +47,6 @@
 
   services.tailscale = {
     enable = true;
-    package = pkgsUnstable.tailscale;
     useRoutingFeatures = "server";
   };
 

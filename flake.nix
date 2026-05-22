@@ -13,11 +13,11 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.6.0";
+    nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.7.0";
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -89,7 +89,7 @@
           ] ++ modules.nixos;
         };
 
-        optiplex2 = nixpkgs.lib.nixosSystem {
+        optiplex2 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
@@ -98,7 +98,7 @@
           ] ++ modules.nixos;
         };
 
-        optiplex3 = nixpkgs.lib.nixosSystem {
+        optiplex3 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
@@ -107,7 +107,7 @@
           ] ++ modules.nixos;
         };
 
-        auriga-nixos = nixpkgs.lib.nixosSystem {
+        auriga-nixos = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
