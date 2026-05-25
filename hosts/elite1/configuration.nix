@@ -4,7 +4,7 @@
   imports =
     [
       ./hardware-configuration.nix
-      ./timekpr.nix
+      #./timekpr.nix
     ];
 
   # Bootloader.
