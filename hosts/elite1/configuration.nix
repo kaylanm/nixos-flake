@@ -87,6 +87,10 @@
       "org.vinegarhq.Sober"
       "org.vinegarhq.Vinegar"
     ];
+    update.auto = {
+      enable = true;
+      onCalendar = "*:0/2:00"; # Every two hours
+    };
   };
 
   programs.dconf = {
