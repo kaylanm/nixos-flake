@@ -1,16 +1,16 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs?ref=master";
 
-    home-manager.url = "github:nix-community/home-manager?ref=release-25.11";
+    home-manager.url = "github:nix-community/home-manager?ref=release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     home-manager-unstable.url = "github:nix-community/home-manager";
     home-manager-unstable.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    nix-darwin.url = "github:LnL7/nix-darwin?ref=nix-darwin-25.11";
+    nix-darwin.url = "github:LnL7/nix-darwin?ref=nix-darwin-26.05";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
@@ -27,17 +27,38 @@
     colmena.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-master, nix-darwin, nixos-hardware, nix-flatpak, home-manager, home-manager-unstable, sops-nix, ... }@inputs:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nixpkgs-unstable,
+      nixpkgs-master,
+      nix-darwin,
+      nixos-hardware,
+      nix-flatpak,
+      home-manager,
+      home-manager-unstable,
+      sops-nix,
+      ...
+    }@inputs:
     let
       modules = import ./modules/top-level/all-modules.nix { inherit (nixpkgs) lib; };
 
-      systems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
     in
     rec {
-      packages = forAllSystems (system: import ./pkgs {
-        callPackage = nixpkgs.legacyPackages.${system}.callPackage;
-      });
+      packages = forAllSystems (
+        system:
+        import ./pkgs {
+          callPackage = nixpkgs.legacyPackages.${system}.callPackage;
+        }
+      );
 
       overlays.default = import ./overlays/default.nix;
 
@@ -48,7 +69,8 @@
           modules = [
             ./hosts/covenant/configuration.nix
             # home-manager.darwinModules.home-manager
-          ] ++ modules.darwin;
+          ]
+          ++ modules.darwin;
         };
 
         nostromo = nix-darwin.lib.darwinSystem {
@@ -57,7 +79,8 @@
           modules = [
             ./hosts/nostromo/configuration.nix
             # home-manager.darwinModules.home-manager
-          ] ++ modules.darwin;
+          ]
+          ++ modules.darwin;
         };
       };
 
@@ -69,7 +92,8 @@
             ./hosts/elite1/configuration.nix
             nix-flatpak.nixosModules.nix-flatpak
             # home-manager.nixosModules.home-manager
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         elite2 = nixpkgs.lib.nixosSystem {
@@ -78,7 +102,8 @@
           modules = [
             ./hosts/elite2/configuration.nix
             # home-manager.nixosModules.home-manager
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         optiplex1 = nixpkgs-unstable.lib.nixosSystem {
@@ -87,7 +112,8 @@
           modules = [
             ./hosts/optiplex1/configuration.nix
             # sops-nix.nixosModules.sops
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         optiplex2 = nixpkgs-unstable.lib.nixosSystem {
@@ -96,7 +122,8 @@
           modules = [
             ./hosts/optiplex2/configuration.nix
             # sops-nix.nixosModules.sops
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         optiplex3 = nixpkgs-unstable.lib.nixosSystem {
@@ -105,7 +132,8 @@
           modules = [
             ./hosts/optiplex3/configuration.nix
             # sops-nix.nixosModules.sops
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         auriga-nixos = nixpkgs-unstable.lib.nixosSystem {
@@ -114,7 +142,8 @@
           modules = [
             ./hosts/auriga-nixos/configuration.nix
             # home-manager.nixosModules.home-manager
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         auriga = nixpkgs-unstable.lib.nixosSystem {
@@ -123,7 +152,8 @@
           modules = [
             ./hosts/auriga/configuration.nix
             # home-manager.nixosModules.home-manager
-          ] ++ modules.nixos;
+          ]
+          ++ modules.nixos;
         };
 
         pi4 = nixpkgs.lib.nixosSystem {
@@ -141,10 +171,11 @@
         meta = {
           nixpkgs = import nixpkgs {
             system = "x86_64-linux";
-            overlays = [];
+            overlays = [ ];
           };
         };
-      } // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
+      }
+      // builtins.mapAttrs (name: value: { imports = value._module.args.modules; }) nixosConfigurations;
 
       hmModules = {
         mike = {
