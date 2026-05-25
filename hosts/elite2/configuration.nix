@@ -12,7 +12,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "elite2"; # Define your hostname.
-  networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
+  #networking.wireless.enable = false;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
   networking.networkmanager.enable = true;
