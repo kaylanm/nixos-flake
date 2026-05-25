@@ -16,7 +16,7 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  #networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
