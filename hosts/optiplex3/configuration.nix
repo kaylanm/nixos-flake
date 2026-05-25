@@ -7,7 +7,9 @@
       ./homebox.nix
       ./memos.nix
       ./netboot.nix
+      ./outline.nix
       ./paperless.nix
+      ./rustdesk.nix
       ./sane.nix
       #./synapse.nix
     ];
