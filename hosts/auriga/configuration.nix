@@ -178,8 +178,10 @@
         discord
         fastfetch
         firefox
+        gcc
         ghostty
         gnome-extensions-cli
+        gnumake
         google-chrome
         kitty
         prismlauncher
@@ -187,18 +189,11 @@
         spotify
         wofi
         vscode
-
-        (gnomeExtensions.wintile-beyond.overrideAttrs {
-          src = pkgs.fetchFromGitHub {
-            owner = "kaylanm";
-            repo = "wintile-beyond";
-            rev = "3e0678eddd2375d722e46fd4eca46e551cfc6152";
-            sha256 = "sha256-Cm9EqKAl5I797QlUp2MOGb2em8C1CSc0pDrQX+UWAiA=";
-          };
-        })
+        xwayland-satellite
 
         gnomeExtensions.just-perfection
         gnomeExtensions.tophat
+        gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
       ]
       ++ (with pkgsMaster; [
         claude-code
