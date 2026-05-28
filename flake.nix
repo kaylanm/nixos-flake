@@ -165,6 +165,14 @@
             nixos-hardware.nixosModules.raspberry-pi-4
           ];
         };
+
+        ryan-linux-pc = nixpkgs-unstable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/ryan-linux-pc/configuration.nix
+          ];
+        };
       };
 
       colmena = {
