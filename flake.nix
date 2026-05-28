@@ -171,6 +171,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/ryan-linux-pc/configuration.nix
+            nix-flatpak.nixosModules.nix-flatpak
           ];
         };
       };
