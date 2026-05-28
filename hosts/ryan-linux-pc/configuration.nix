@@ -13,6 +13,14 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.windows = {
+    "sdc" = {
+      title = "Windows 11";
+      efiDeviceHandle = "FS2";
+      sortKey = "a_windows";
+    };
+  };
+
 
   networking.hostName = "ryan-linux-pc"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
