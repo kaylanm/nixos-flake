@@ -1,4 +1,4 @@
-{ lib, config, pkgs, pkgsUnstable, inputs, ... }:
+{ lib, config, pkgs, pkgsMaster, pkgsUnstable, inputs, ... }:
 
 {
   environment.darwinConfig = inputs.self + /hosts/covenant/configuration.nix;
@@ -107,6 +107,15 @@
     "wireshark-app"
     "zoom"
   ];
+
+  environment.systemPackages = []
+    ++ (with pkgsMaster; [
+      claude-code
+      codex
+      gemini-cli
+      opencode
+      yt-dlp
+    ]);
 
   homebrew.onActivation.autoUpdate = true;
   homebrew.onActivation.upgrade = true;
