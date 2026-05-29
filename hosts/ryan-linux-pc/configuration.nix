@@ -112,6 +112,7 @@
     neovim
     ghostty
     google-chrome
+    prismlauncher
   ];
 
   services.flatpak = {
