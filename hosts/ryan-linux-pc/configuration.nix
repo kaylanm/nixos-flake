@@ -58,6 +58,16 @@
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = true;
+    nvidiaSettings = true;
+  };
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
