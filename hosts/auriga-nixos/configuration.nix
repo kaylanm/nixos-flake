@@ -21,9 +21,10 @@
 
   environment.systemPackages =
     (with pkgs; [
-      fishPlugins.grc
+      #fishPlugins.grc
       fishPlugins.bobthefisher
       ghostty
+      gnumake
       grc
       inputs.colmena.packages.x86_64-linux.colmena
       python3
