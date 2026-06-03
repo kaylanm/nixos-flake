@@ -1,6 +1,8 @@
 {
-  # Use Determinate Nix on Darwin
-  nix.enable = false;
+  flake.modules.darwin.defaults = {
+    # Use Determinate Nix on Darwin
+    nix.enable = false;
 
-  nixpkgs.config.allowUnfree = true;
+    nixpkgs.config.allowUnfree = true;
+  };
 }

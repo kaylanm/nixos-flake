@@ -1,8 +1,31 @@
-{ config, pkgs, inputs, ... }:
-
 {
-  _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
-    inherit (pkgs.stdenv.hostPlatform) system;
-    inherit (config.nixpkgs) config;
+  flake.modules = {
+    darwin.unstable =
+      {
+        config,
+        pkgs,
+        inputs,
+        ...
+      }:
+      {
+        _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
+          inherit (pkgs.stdenv.hostPlatform) system;
+          inherit (config.nixpkgs) config;
+        };
+      };
+
+    nixos.unstable =
+      {
+        config,
+        pkgs,
+        inputs,
+        ...
+      }:
+      {
+        _module.args.pkgsUnstable = import inputs.nixpkgs-unstable {
+          inherit (pkgs.stdenv.hostPlatform) system;
+          inherit (config.nixpkgs) config;
+        };
+      };
   };
 }

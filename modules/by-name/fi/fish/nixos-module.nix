@@ -1,11 +1,13 @@
-{ pkgsUnstable, ... }:
-
 {
-  programs.fish = {
-    enable = true;
-    package = pkgsUnstable.fish;
-    useBabelfish = true;
-  };
+  flake.modules.nixos.fish =
+    { pkgsUnstable, ... }:
+    {
+      programs.fish = {
+        enable = true;
+        package = pkgsUnstable.fish;
+        useBabelfish = true;
+      };
 
-  users.users.root.shell = pkgsUnstable.fish;
+      users.users.root.shell = pkgsUnstable.fish;
+    };
 }

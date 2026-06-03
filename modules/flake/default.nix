@@ -6,10 +6,10 @@
 {
   imports = [
     inputs.flake-parts.flakeModules.modules
-    ./modules.nix
+    ../by-name
+    ../hosts
     ./packages.nix
     ./overlays.nix
-    ./hosts.nix
     ./home-manager.nix
     ./colmena.nix
   ];
