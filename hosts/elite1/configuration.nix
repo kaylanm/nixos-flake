@@ -22,9 +22,11 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.displayManager.gdm.enable = true;
-  services.displayManager.gdm.autoSuspend = false;
-  services.desktopManager.gnome.enable = true;
+  #services.displayManager.gdm.enable = true;
+  #services.displayManager.gdm.autoSuspend = false;
+  #services.desktopManager.gnome.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -45,7 +47,9 @@
     powerManagement.finegrained = false;
     open = true;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    #package = config.boot.kernelPackages.nvidiaPackages.stable;
+    # Until nvidia driver fixes Thunderbolt eGPUs (broken on 595.71.05) could also try new_feature.
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
   };
 
   # Disable iGPU
