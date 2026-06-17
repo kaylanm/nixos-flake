@@ -31,7 +31,7 @@
     p7zip
     ripgrep
     screen
-    silver-searcher
+    #silver-searcher
     socat
     tmux
     unzip
