@@ -49,7 +49,8 @@
     nvidiaSettings = true;
     #package = config.boot.kernelPackages.nvidiaPackages.stable;
     # Until nvidia driver fixes Thunderbolt eGPUs (broken on 595.71.05) could also try new_feature.
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+    #package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+    package = config.boot.kernelPackages.nvidiaPackages.new_feature;
   };
 
   # Disable iGPU
