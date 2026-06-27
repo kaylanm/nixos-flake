@@ -85,7 +85,7 @@
       };
 
       nixosConfigurations = {
-        elite1 = nixpkgs.lib.nixosSystem {
+        elite1 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
@@ -96,7 +96,7 @@
           ++ modules.nixos;
         };
 
-        elite2 = nixpkgs.lib.nixosSystem {
+        elite2 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
