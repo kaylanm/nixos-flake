@@ -1,8 +1,8 @@
-{ config, pkgs, inputs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   _module.args.pkgsMaster = import inputs.nixpkgs-master {
     inherit (pkgs.stdenv.hostPlatform) system;
-    inherit (config.nixpkgs) config;
+    inherit (pkgs) config;
   };
 }

@@ -24,6 +24,18 @@
 
   system.primaryUser = "mike";
 
+  launchd.daemons.limit-maxfiles.serviceConfig = {
+    Label = "limit.maxfiles";
+    ProgramArguments = [
+      "/bin/launchctl"
+      "limit"
+      "maxfiles"
+      "8192"
+      "65536"
+    ];
+    RunAtLoad = true;
+  };
+
   system.defaults.NSGlobalDomain = {
     AppleKeyboardUIMode = 3; # Enable tabbing through UI elements.
     AppleShowAllExtensions = true;
@@ -72,12 +84,10 @@
     "adobe-acrobat-reader"
     "alfred"
     "amethyst"
-    "antigravity"
     "arc"
     "arduino-ide"
     "brave-browser"
     "caffeine"
-    "cursor"
     "discord"
     "docker-desktop"
     "emacs-app"
@@ -103,7 +113,6 @@
     "vial"
     "visual-studio-code"
     "vlc"
-    "windsurf"
     "wireshark-app"
     "zoom"
   ];
