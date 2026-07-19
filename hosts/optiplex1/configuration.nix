@@ -15,6 +15,7 @@
       ./meshcentral.nix
       ./mqtt.nix
       ./music-assistant.nix
+      ./nextdns.nix
       ./printing.nix
       ./restic.nix
       ./ups.nix
