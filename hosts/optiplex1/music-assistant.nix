@@ -5,7 +5,7 @@
     backend = "docker";
     containers = {
       musicAssistant = {
-        image = "ghcr.io/music-assistant/server:2.9.5";
+        image = "ghcr.io/music-assistant/server:2.9.9";
         extraOptions = [
           "--network=host"
           # "--cap-add=DAC_READ_SEARCH"
