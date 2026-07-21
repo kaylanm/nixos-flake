@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs?ref=master";
+    nixpkgs-matter-server.url = "github:NixOS/nixpkgs/d407951447dcd00442e97087bf374aad70c04cea";
 
     home-manager.url = "github:nix-community/home-manager?ref=release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
