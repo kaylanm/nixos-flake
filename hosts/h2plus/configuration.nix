@@ -85,6 +85,17 @@
 
   # List services that you want to enable:
 
+  services.smartd = {
+    enable = true;
+    autodetect = true;
+  };
+
+  services.zfs.autoScrub = {
+    enable = true;
+    pools = [ "tank" ];
+    interval = "monthly";
+  };
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
