@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -52,50 +52,70 @@
     variant = "";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users."mike" = {
-    isNormalUser = true;
-    description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-    shell = pkgs.fish;
+  users.groups = {
+    mike = { };
+    nikki = { };
+    ryan = { };
+    alex = { };
+    timemachine = { };
   };
 
-  users.users."nikki" = {
-    isNormalUser = true;
-    description = "Nicole Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-    shell = pkgs.fish;
-  };
+  users.users = {
+    mike = {
+      isNormalUser = true;
+      description = "Michael Kaylan";
+      group = "mike";
+      extraGroups = [
+        "networkmanager"
+        "timemachine"
+        "wheel"
+      ];
+      packages = with pkgs; [ ];
+      shell = pkgs.fish;
+    };
 
-  users.users."ryan" = {
-    isNormalUser = true;
-    description = "Ryan Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-    shell = pkgs.fish;
-  };
+    nikki = {
+      isNormalUser = true;
+      description = "Nicole Kaylan";
+      group = "nikki";
+      extraGroups = [ "timemachine" ];
+      packages = with pkgs; [ ];
+      shell = pkgs.fish;
+    };
 
-  users.users."alex" = {
-    isNormalUser = true;
-    description = "Alex Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-    shell = pkgs.fish;
+    ryan = {
+      isNormalUser = true;
+      description = "Ryan Kaylan";
+      group = "ryan";
+      extraGroups = [ "timemachine" ];
+      packages = with pkgs; [ ];
+      shell = pkgs.fish;
+    };
+
+    alex = {
+      isNormalUser = true;
+      description = "Alex Kaylan";
+      group = "alex";
+      extraGroups = [ "timemachine" ];
+      packages = with pkgs; [ ];
+      shell = pkgs.fish;
+    };
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # Enable the modern Nix CLI and flake support.
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
     neovim
     git
   ];
