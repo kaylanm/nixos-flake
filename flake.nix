@@ -106,6 +106,15 @@
           ++ modules.nixos;
         };
 
+        h2plus = nixpkgs-unstable.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/h2plus/configuration.nix
+          ]
+          ++ modules.nixos;
+        };
+
         optiplex1 = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
