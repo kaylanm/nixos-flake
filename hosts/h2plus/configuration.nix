@@ -58,6 +58,31 @@
     description = "Michael Kaylan";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
+    shell = pkgs.fish;
+  };
+
+  users.users."nikki" = {
+    isNormalUser = true;
+    description = "Nicole Kaylan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+    shell = pkgs.fish;
+  };
+
+  users.users."ryan" = {
+    isNormalUser = true;
+    description = "Ryan Kaylan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+    shell = pkgs.fish;
+  };
+
+  users.users."alex" = {
+    isNormalUser = true;
+    description = "Alex Kaylan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+    shell = pkgs.fish;
   };
 
   # Allow unfree packages
