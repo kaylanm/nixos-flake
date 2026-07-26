@@ -115,9 +115,6 @@ in
 
     system.autoUpgrade = {
       enable = true;
-      # Force the path fetcher so root can evaluate a checkout owned by cfg.user
-      # without Nix treating it as a Git input and rejecting its ownership.
-      flake = lib.mkDefault "path:${cfg.path}#${cfg.configuration}";
       # Renovate owns flake.lock; the machine only consumes committed updates.
       upgrade = lib.mkDefault false;
       operation = lib.mkDefault "switch";
@@ -128,6 +125,24 @@ in
       allowReboot = lib.mkDefault false;
     };
 
-    systemd.services.nixos-upgrade.preStart = lib.getExe updateCheckout;
+    systemd.services.nixos-upgrade = {
+      preStart = lib.getExe updateCheckout;
+
+      # Resolve the /etc/nixos symlink at runtime. An explicit path: URI for
+      # the real directory avoids both Git's ownership check and the path
+      # fetcher's inability to copy a top-level symlink in pure mode.
+      script = lib.mkForce ''
+        if ! repository="$(${pkgs.coreutils}/bin/readlink --canonicalize-existing ${lib.escapeShellArg cfg.path})"; then
+          echo "Cannot resolve the NixOS flake checkout at ${cfg.path}" >&2
+          exit 1
+        fi
+
+        ${config.system.build.nixos-rebuild}/bin/nixos-rebuild \
+          ${lib.escapeShellArg config.system.autoUpgrade.operation} \
+          ${lib.escapeShellArgs config.system.autoUpgrade.flags} \
+          --refresh \
+          --flake "path:$repository#${cfg.configuration}"
+      '';
+    };
   };
 }
