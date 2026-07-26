@@ -4,7 +4,7 @@
   virtualisation.oci-containers = {
     containers = {
       memos = {
-        image = "neosmemo/memos:0.25.2";
+        image = "neosmemo/memos:0.29.1";
         ports = [
           "5230:5230"
         ];
