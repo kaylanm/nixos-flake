@@ -5,8 +5,15 @@
     optiplex1 = {
       initialize = true;
       paths = [
+        "/var/lib/acme"
+        "/var/lib/esphome"
         "/var/lib/home-assistant"
         "/var/lib/immich"
+        "/var/lib/linkwarden"
+        "/var/lib/matterjs-server"
+        "/var/lib/music-assistant"
+        "/var/lib/tailscale"
+        "/var/lib/zigbee2mqtt"
       ];
       pruneOpts = [
         "--keep-daily 14"
