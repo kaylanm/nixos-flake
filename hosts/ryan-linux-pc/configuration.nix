@@ -23,6 +23,7 @@
 
 
   networking.hostName = "ryan-linux-pc"; # Define your hostname.
+  services.flakeAutoUpgrade.user = "ryan";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary

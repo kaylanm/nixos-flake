@@ -171,6 +171,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/pi4/configuration.nix
+            ./modules/by-name/fl/flake-auto-upgrade/nixos-module.nix
             ./modules/by-name/un/unstable/module.nix
             nixos-hardware.nixosModules.raspberry-pi-4
           ];
@@ -181,6 +182,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/ryan-linux-pc/configuration.nix
+            ./modules/by-name/fl/flake-auto-upgrade/nixos-module.nix
             nix-flatpak.nixosModules.nix-flatpak
           ];
         };
