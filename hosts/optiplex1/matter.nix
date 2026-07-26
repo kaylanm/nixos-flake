@@ -1,9 +1,12 @@
 { pkgs, inputs, ... }:
 
 {
-  services.matter-server = {
+  services.matterjs-server = {
     enable = true;
-    package =
-      inputs.nixpkgs-matter-server.legacyPackages.${pkgs.stdenv.hostPlatform.system}.python-matter-server;
+
+    extraArgs = [
+      "--vendorid=4939" # 0x143b
+      "--fabricid=1"
+    ];
   };
 }
