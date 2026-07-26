@@ -45,8 +45,8 @@ let
         exit 1
       fi
 
-      if ! run_as_update_user git -C "$repository" diff --quiet HEAD --; then
-        echo "Refusing to update $repository because it has modified tracked files" >&2
+      if [ -n "$(run_as_update_user git -C "$repository" status --porcelain)" ]; then
+        echo "Refusing to update $repository because its working tree is not clean" >&2
         exit 1
       fi
 
@@ -115,7 +115,9 @@ in
 
     system.autoUpgrade = {
       enable = true;
-      flake = lib.mkDefault "${cfg.path}#${cfg.configuration}";
+      # Force the path fetcher so root can evaluate a checkout owned by cfg.user
+      # without Nix treating it as a Git input and rejecting its ownership.
+      flake = lib.mkDefault "path:${cfg.path}#${cfg.configuration}";
       # Renovate owns flake.lock; the machine only consumes committed updates.
       upgrade = lib.mkDefault false;
       operation = lib.mkDefault "switch";
