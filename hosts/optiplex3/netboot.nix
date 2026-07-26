@@ -3,7 +3,7 @@
 {
   virtualisation.oci-containers.containers = {
     netboot = {
-      image = "ghcr.io/netbootxyz/netbootxyz";
+      image = "ghcr.io/netbootxyz/netbootxyz:latest";
       ports = [
         "3000:3000"
         "69:69/udp"
@@ -16,4 +16,3 @@
     };
   };
 }
-
