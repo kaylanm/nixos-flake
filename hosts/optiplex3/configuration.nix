@@ -1,18 +1,17 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./homebox.nix
-      ./memos.nix
-      ./netboot.nix
-      ./outline.nix
-      ./paperless.nix
-      ./rustdesk.nix
-      ./sane.nix
-      #./synapse.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./homebox.nix
+    ./memos.nix
+    ./netboot.nix
+    ./outline.nix
+    ./paperless.nix
+    ./rustdesk.nix
+    ./sane.nix
+    #./synapse.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -45,12 +44,23 @@
     useRoutingFeatures = "server";
   };
 
+  services.serviceAlerts = {
+    agent.enable = true;
+    server.enable = true;
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ neovim vim ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [
+      neovim
+      vim
+    ];
     shell = pkgs.fish;
   };
 

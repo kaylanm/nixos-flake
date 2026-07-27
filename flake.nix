@@ -171,6 +171,7 @@
           modules = [
             ./hosts/pi4/configuration.nix
             ./modules/by-name/fl/flake-auto-upgrade/nixos-module.nix
+            ./modules/by-name/se/service-alerts/nixos-module.nix
             ./modules/by-name/un/unstable/module.nix
             nixos-hardware.nixosModules.raspberry-pi-4
           ];

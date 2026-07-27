@@ -1,22 +1,21 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./backup.nix
-      ./minecraft-server.nix
-      ./minecraft-server-bedrock.nix
-      ./minecraft-server-allthemons.nix
-      ./minecraft-server-atm9tts.nix
-      ./minecraft-server-atm10.nix
-      ./minecraft-server-atm10tts.nix
-      ./minecraft-server-monifactory.nix
-      ./minecraft-server-stoneblock3.nix
-      ./minecraft-server-stoneblock4.nix
-      ./minecraft-server-oceanblock2.nix
-      ./minecraft-server-tekxit4.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./backup.nix
+    ./minecraft-server.nix
+    ./minecraft-server-bedrock.nix
+    ./minecraft-server-allthemons.nix
+    ./minecraft-server-atm9tts.nix
+    ./minecraft-server-atm10.nix
+    ./minecraft-server-atm10tts.nix
+    ./minecraft-server-monifactory.nix
+    ./minecraft-server-stoneblock3.nix
+    ./minecraft-server-stoneblock4.nix
+    ./minecraft-server-oceanblock2.nix
+    ./minecraft-server-tekxit4.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -50,12 +49,20 @@
     useRoutingFeatures = "server";
   };
 
+  services.serviceAlerts.agent.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ neovim vim ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [
+      neovim
+      vim
+    ];
     shell = pkgs.fish;
   };
 

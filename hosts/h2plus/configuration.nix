@@ -142,6 +142,13 @@
     interval = "monthly";
   };
 
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "server";
+  };
+
+  services.serviceAlerts.agent.enable = true;
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
