@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   services.linkwarden = {
@@ -12,11 +17,4 @@
       NEXTAUTH_SECRET = "/etc/nextauth-secret";
     };
   };
-
-  services.caddy.virtualHosts."https://linkwarden.manx-in.ts.net".extraConfig = ''
-    bind tailscale/linkwarden
-
-    reverse_proxy [::1]:2293
-  '';
 }
-

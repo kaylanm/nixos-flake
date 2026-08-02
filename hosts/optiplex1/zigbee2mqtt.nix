@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   services.zigbee2mqtt = {
@@ -35,10 +40,4 @@
       };
     };
   };
-
-  services.caddy.virtualHosts."https://z2m.manx-in.ts.net".extraConfig = ''
-    bind tailscale/z2m
-
-    reverse_proxy :8080
-  '';
 }

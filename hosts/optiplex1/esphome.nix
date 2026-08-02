@@ -1,4 +1,9 @@
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 let
   esphomePkg = pkgs.esphome;
@@ -11,10 +16,4 @@ in
 
   # esphome cli for interactive use
   environment.systemPackages = [ esphomePkg ];
-
-  services.caddy.virtualHosts."https://esphome.manx-in.ts.net".extraConfig = ''
-    bind tailscale/esphome
-
-    reverse_proxy :6052
-  '';
 }

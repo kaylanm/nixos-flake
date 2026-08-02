@@ -1,27 +1,25 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./acme.nix
-      #./caddy.nix
-      ./code-server.nix
-      ./esphome.nix
-      ./hardware-configuration.nix
-      ./home-assistant.nix
-      ./immich.nix
-      ./linkwarden.nix
-      ./matter.nix
-      ./meshcentral.nix
-      ./mqtt.nix
-      ./music-assistant.nix
-      ./nextdns.nix
-      ./printing.nix
-      ./restic.nix
-      ./ups.nix
-      ./zigbee2mqtt.nix
-      ./zwave.nix
-    ];
+  imports = [
+    ./acme.nix
+    ./code-server.nix
+    ./esphome.nix
+    ./hardware-configuration.nix
+    ./home-assistant.nix
+    ./immich.nix
+    ./linkwarden.nix
+    ./matter.nix
+    ./meshcentral.nix
+    ./mqtt.nix
+    ./music-assistant.nix
+    ./nextdns.nix
+    ./printing.nix
+    ./restic.nix
+    ./ups.nix
+    ./zigbee2mqtt.nix
+    ./zwave.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -60,8 +58,14 @@
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ neovim vim ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [
+      neovim
+      vim
+    ];
     shell = pkgs.fish;
   };
 
