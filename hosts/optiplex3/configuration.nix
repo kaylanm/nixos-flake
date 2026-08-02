@@ -49,6 +49,8 @@
     server.enable = true;
   };
 
+  services.prometheusGrafana.enable = true;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
     isNormalUser = true;
