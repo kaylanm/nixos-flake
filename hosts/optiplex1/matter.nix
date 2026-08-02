@@ -9,4 +9,6 @@
       "--fabricid=1"
     ];
   };
+
+  services.tailscale.serve.services.matter.endpoints."tcp:443" = "http://localhost:5580";
 }

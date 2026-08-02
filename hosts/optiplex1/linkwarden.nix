@@ -17,4 +17,6 @@
       NEXTAUTH_SECRET = "/etc/nextauth-secret";
     };
   };
+
+  services.tailscale.serve.services.linkwarden.endpoints."tcp:443" = "http://localhost:2293";
 }

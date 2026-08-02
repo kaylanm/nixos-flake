@@ -7,5 +7,6 @@
     publicUrl = "https://outline.manx-in.ts.net/";
     storage.storageType = "local";
   };
-}
 
+  services.tailscale.serve.services.outline.endpoints."tcp:443" = "http://localhost:3001";
+}
