@@ -1,11 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./ceph.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -58,13 +61,15 @@
 
   programs.dconf = {
     enable = true;
-    profiles.user.databases = [{
-      settings = with lib.gvariant; {
-        "org/gnome/mutter" = {
-          check-alive-timeout = mkUint32 60000;
+    profiles.user.databases = [
+      {
+        settings = with lib.gvariant; {
+          "org/gnome/mutter" = {
+            check-alive-timeout = mkUint32 60000;
+          };
         };
-      };
-    }];
+      }
+    ];
   };
 
   programs.hyprland.enable = true;
@@ -72,7 +77,10 @@
   programs.nix-ld.enable = true;
   programs.steam.enable = true;
 
-  services.udev.packages = with pkgs; [ via vial ];
+  services.udev.packages = with pkgs; [
+    via
+    vial
+  ];
 
   environment.systemPackages = with pkgs; [
     firefox
@@ -89,7 +97,11 @@
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" "dialout" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "dialout"
+    ];
     packages = with pkgs; [
       killall
       pciutils
