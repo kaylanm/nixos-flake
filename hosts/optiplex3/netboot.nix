@@ -15,4 +15,6 @@
       ];
     };
   };
+
+  services.tailscale.serve.services.netboot.endpoints."tcp:443" = "http://localhost:3000";
 }

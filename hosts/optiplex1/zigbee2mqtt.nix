@@ -40,4 +40,6 @@
       };
     };
   };
+
+  services.tailscale.serve.services.z2m.endpoints."tcp:443" = "http://localhost:8080";
 }

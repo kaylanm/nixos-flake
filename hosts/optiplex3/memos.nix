@@ -14,4 +14,6 @@
       };
     };
   };
+
+  services.tailscale.serve.services.memos.endpoints."tcp:443" = "http://localhost:5230";
 }

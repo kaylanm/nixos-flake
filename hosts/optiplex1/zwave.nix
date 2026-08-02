@@ -21,4 +21,6 @@
       };
     });
   };
+
+  services.tailscale.serve.services.zwave.endpoints."tcp:443" = "http://localhost:8091";
 }

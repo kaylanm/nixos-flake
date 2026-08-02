@@ -19,5 +19,7 @@
     };
   };
 
+  services.tailscale.serve.services.musicassistant.endpoints."tcp:443" = "http://localhost:8095";
+
   networking.firewall.allowedTCPPorts = [ 3483 8095 8096 8097 ];
 }

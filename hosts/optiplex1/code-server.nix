@@ -13,4 +13,6 @@
     disableGettingStartedOverride = true;
     auth = "none";
   };
+
+  services.tailscale.serve.services.code.endpoints."tcp:443" = "http://localhost:4444";
 }
