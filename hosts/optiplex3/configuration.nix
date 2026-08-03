@@ -43,7 +43,10 @@
 
   services.tailscale = {
     enable = true;
-    serve.enable = true;
+    serve = {
+      enable = true;
+      httpsWorkaround.enable = true;
+    };
     useRoutingFeatures = "server";
   };
 
