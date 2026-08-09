@@ -34,7 +34,6 @@
     ++ (with pkgsMaster; [
       claude-code
       codex
-      gemini-cli
       opencode
       yt-dlp
     ]);
