@@ -84,7 +84,6 @@
     "adobe-acrobat-reader"
     "alfred"
     "amethyst"
-    "arc"
     "arduino-ide"
     "brave-browser"
     "caffeine"
@@ -97,6 +96,7 @@
     "font-iosevka-nerd-font"
     "ghostty"
     "google-chrome"
+    "helium-browser"
     "iterm2"
     "lm-studio"
     "localsend"
@@ -114,6 +114,7 @@
     "visual-studio-code"
     "vlc"
     "wireshark-app"
+    "zen"
     "zoom"
   ];
 
