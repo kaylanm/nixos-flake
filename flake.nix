@@ -1,4 +1,11 @@
 {
+  nixConfig = {
+    extra-substituters = [ "https://cache.numtide.com" ];
+    extra-trusted-public-keys = [
+      "niks3.numtide.com-1:DTx8wZduET09hRmMtKdQDxNNthLQETkc/yaX7M4qK0g="
+    ];
+  };
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
