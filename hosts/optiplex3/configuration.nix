@@ -1,18 +1,17 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./homebox.nix
-      ./memos.nix
-      ./netboot.nix
-      ./outline.nix
-      ./paperless.nix
-      ./rustdesk.nix
-      ./sane.nix
-      #./synapse.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    ./homebox.nix
+    ./memos.nix
+    ./netboot.nix
+    ./outline.nix
+    ./paperless.nix
+    ./rustdesk.nix
+    ./sane.nix
+    #./synapse.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -20,6 +19,8 @@
 
   networking.hostName = "optiplex3"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  programs.llm-agents.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -49,8 +50,14 @@
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [ neovim vim ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [
+      neovim
+      vim
+    ];
     shell = pkgs.fish;
   };
 

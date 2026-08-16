@@ -30,6 +30,8 @@
 
   networking.hostName = "auriga"; # Define your hostname.
 
+  programs.llm-agents.enable = true;
+
   # Enable networking
   networking.networkmanager.enable = true;
 
@@ -196,9 +198,6 @@
         gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
       ]
       ++ (with pkgsMaster; [
-        claude-code
-        codex
-        opencode
         yt-dlp
       ]);
     shell = pkgs.fish;

@@ -1,7 +1,17 @@
-{ lib, config, pkgs, pkgsMaster, pkgsUnstable, inputs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  pkgsMaster,
+  pkgsUnstable,
+  inputs,
+  ...
+}:
 
 {
   environment.darwinConfig = inputs.self + /hosts/covenant/configuration.nix;
+
+  programs.llm-agents.enable = true;
 
   # environment.defaultPackages = lib.attrValues { inherit (pkgs) neovim; };
   # environment.variables.EDITOR = "${lib.getExe pkgs.neovim}";
@@ -118,11 +128,9 @@
     "zoom"
   ];
 
-  environment.systemPackages = []
+  environment.systemPackages =
+    [ ]
     ++ (with pkgsMaster; [
-      claude-code
-      codex
-      opencode
       yt-dlp
     ]);
 

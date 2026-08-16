@@ -3,6 +3,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs?ref=master";
+    llm-agents.url = "github:numtide/llm-agents.nix";
 
     home-manager.url = "github:nix-community/home-manager?ref=release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -17,6 +18,7 @@
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak?ref=v0.7.0";
 

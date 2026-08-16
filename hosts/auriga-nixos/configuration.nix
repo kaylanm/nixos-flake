@@ -18,6 +18,7 @@
   wsl.defaultUser = "mike";
 
   programs.nix-ld.enable = true;
+  programs.llm-agents.enable = true;
 
   environment.systemPackages =
     (with pkgs; [
@@ -32,9 +33,6 @@
       xsane
     ])
     ++ (with pkgsMaster; [
-      claude-code
-      codex
-      opencode
       yt-dlp
     ]);
 
