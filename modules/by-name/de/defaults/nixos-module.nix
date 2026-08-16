@@ -1,4 +1,6 @@
 {
+  boot.loader.systemd-boot.configurationLimit = 10;
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   nix.gc = {
