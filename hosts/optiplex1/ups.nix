@@ -11,7 +11,7 @@
     };
     users = {
       nutuser = {
-        passwordFile = "/etc/nut-passwd";
+        passwordFile = config.sops.secrets."nut-password".path;
         instcmds = [ "ALL" ];
       };
     };
@@ -20,10 +20,9 @@
         apc = {
           system = "apc@localhost";
           user = "nutuser";
-          passwordFile = "/etc/nut-passwd";
+          passwordFile = config.sops.secrets."nut-password".path;
         };
       };
     };
   };
 }
-

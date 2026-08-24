@@ -5,6 +5,7 @@
     [
       ./hardware-configuration.nix
       ./backup.nix
+      ./secrets.nix
       ./minecraft-server.nix
       ./minecraft-server-bedrock.nix
       ./minecraft-server-allthemons.nix

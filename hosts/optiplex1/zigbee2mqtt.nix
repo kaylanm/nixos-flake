@@ -32,7 +32,7 @@
       };
       mqtt = {
         user = "DVES_USER";
-        password = "!/etc/zigbee2mqtt/secret.yaml password";
+        password = "!${config.sops.secrets."zigbee2mqtt-secrets".path} password";
       };
       frontend = {
         enabled = true;

@@ -1,0 +1,17 @@
+keys:
+  - &mike age1z0v04dwka9h8ra7eevkyecj74v6fsg5t7p2dz2nng7wf79qpde2q9jw6n9
+  - &optiplex1 age1xtyvw2kfl5zfldnxxxeltvfpu897enj30d3ynetwh5q4ansenumqxuh084
+  - &optiplex2 age1mnl6tlu0tzfryy5u033eatndht7w0jurcvr0gmffn6uz9du8k47sxnq7mm
+
+creation_rules:
+  - path_regex: secrets/optiplex1\.yaml$
+    key_groups:
+      - age:
+          - *mike
+          - *optiplex1
+
+  - path_regex: secrets/optiplex2\.yaml$
+    key_groups:
+      - age:
+          - *mike
+          - *optiplex2

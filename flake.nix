@@ -129,7 +129,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex1/configuration.nix
-            # sops-nix.nixosModules.sops
+            sops-nix.nixosModules.sops
           ]
           ++ modules.nixos;
         };
@@ -139,7 +139,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex2/configuration.nix
-            # sops-nix.nixosModules.sops
+            sops-nix.nixosModules.sops
           ]
           ++ modules.nixos;
         };
