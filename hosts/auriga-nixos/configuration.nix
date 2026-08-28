@@ -24,6 +24,7 @@
     (with pkgs; [
       #fishPlugins.grc
       fishPlugins.bobthefisher
+      gh
       ghostty
       gnumake
       grc
