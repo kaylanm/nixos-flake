@@ -59,6 +59,7 @@
     isNormalUser = true;
     description = "Michael Kaylan";
     extraGroups = [
+      "esphome"
       "networkmanager"
       "wheel"
     ];
