@@ -9,6 +9,7 @@ let
   cfg = config.services.tailscale.serve;
   workaroundCfg = cfg.httpsWorkaround;
   tailscale = lib.getExe config.services.tailscale.package;
+  desiredServices = map (name: "svc:${name}") (builtins.attrNames cfg.services);
 
   mkEndpointCommand =
     serviceName: source: target:
@@ -32,6 +33,17 @@ let
 
   applyConfig = pkgs.writeShellScript "tailscale-serve-https" ''
     set -euo pipefail
+
+    # Match set-config --all: remove services absent from the desired config,
+    # while leaving node-level Serve/Funnel handlers alone.
+    staleServices=$(${tailscale} serve status --json | ${lib.getExe pkgs.jq} -r \
+      --argjson desired ${lib.escapeShellArg (builtins.toJSON desiredServices)} \
+      '((.Services // {}) | keys) - $desired | .[]')
+    while IFS= read -r service; do
+      if [[ -n "$service" ]]; then
+        ${tailscale} serve clear "$service"
+      fi
+    done <<< "$staleServices"
 
     ${lib.concatStringsSep "\n" (lib.mapAttrsToList mkServiceCommands cfg.services)}
   '';
