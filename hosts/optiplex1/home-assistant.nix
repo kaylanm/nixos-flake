@@ -2,7 +2,7 @@
 
 {
   virtualisation.oci-containers = {
-    backend = "docker";
+    backend = "podman";
     containers = {
       homeAssistant = {
         environment.TZ = "America/New_York";

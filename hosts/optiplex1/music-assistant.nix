@@ -2,7 +2,7 @@
 
 {
   virtualisation.oci-containers = {
-    backend = "docker";
+    backend = "podman";
     containers = {
       musicAssistant = {
         image = "ghcr.io/music-assistant/server:2.10.2";

@@ -13,7 +13,7 @@
         cp fullchain.pem /var/lib/ssl/fullchain.pem
       '';
       reloadServices = [
-        "docker-homeAssistant.service"
+        "podman-homeAssistant.service"
       ];
     };
   };
