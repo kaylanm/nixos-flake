@@ -5,7 +5,7 @@
     backend = "podman";
     containers = {
       musicAssistant = {
-        image = "ghcr.io/music-assistant/server:2.10.2";
+        image = "ghcr.io/music-assistant/server:2.10.3";
         extraOptions = [
           "--network=host"
           # "--cap-add=DAC_READ_SEARCH"
