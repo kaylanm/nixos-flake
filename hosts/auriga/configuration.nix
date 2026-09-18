@@ -116,9 +116,7 @@
       restartIfChanged = true;
     };
 
-    enableSystemMonitoring = true;
     enableDynamicTheming = true;
-    enableClipboardPaste = true;
   };
 
   programs.dsearch.enable = true;
