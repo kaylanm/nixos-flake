@@ -115,8 +115,6 @@
       enable = true;
       restartIfChanged = true;
     };
-
-    enableDynamicTheming = true;
   };
 
   programs.dsearch.enable = true;
