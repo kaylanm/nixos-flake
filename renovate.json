@@ -43,6 +43,16 @@
         "nix"
       ],
       "groupName": "Nix flake inputs"
+    },
+    {
+      "description": "Let the daily nix flake update workflow handle FlakeHub tarballs unsupported by git-refs",
+      "matchManagers": [
+        "nix"
+      ],
+      "matchPackageNames": [
+        "/^https:\\/\\/(api\\.)?flakehub\\.com\\//"
+      ],
+      "enabled": false
     }
   ]
 }
