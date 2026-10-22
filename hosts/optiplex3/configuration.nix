@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./buzz.nix
     ./homebox.nix
     ./memos.nix
     ./netboot.nix
@@ -18,6 +19,12 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "optiplex3"; # Define your hostname.
+  services.buzz = {
+    enable = true;
+    hostname = "buzz.manx-in.ts.net";
+    # npub10pn4w5qhvr5vu3crkr44sdc2far2jw0ljle8uqs9lzrrzeqvacqskzky6a
+    ownerPublicKey = "786757501760e8ce4703b0eb58370a4f46a939ff97f27e0205f88631640cee01";
+  };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   programs.llm-agents.enable = true;
