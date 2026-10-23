@@ -3,6 +3,8 @@
 [buzz.nix](../buzz.nix) adapts Buzz's production Compose bundle into
 Podman services. The relay listens at `127.0.0.1:3030`, avoiding netboot's port
 3000, and advertises `https://buzz.manx-in.ts.net` / `wss://buzz.manx-in.ts.net`.
+The stateless device-pairing relay listens at `127.0.0.1:3031` and is advertised
+as `wss://buzz.manx-in.ts.net/pair` for mobile QR pairing.
 PostgreSQL, Redis, Silo (the MinIO-compatible object store), and their health and
 metrics ports stay on the private `buzz` network. All five images are pinned by
 digest; Renovate can discover their `image` assignments.
@@ -78,12 +80,37 @@ and the appropriate tailnet access policy. On optiplex3, publish its backend:
 
 ```sh
 sudo tailscale serve --service=svc:buzz --https=443 http://127.0.0.1:3030
+sudo tailscale serve --service=svc:buzz --https=443 --set-path=/pair http://127.0.0.1:3031
 ```
 
 Approve the service host in the Tailscale admin console if it is not automatically
 approved. Verify HTTPS and WebSocket access at `buzz.manx-in.ts.net` from a tailnet
 client. Ordinary node-level `tailscale serve` would use optiplex3's own hostname.
 This setup does not enable public Tailscale Funnel access.
+
+Both routes are required: `/` serves the authenticated community relay, and
+`/pair` serves the separate pairing relay from the same pinned image. Pairing
+identities are temporary and do not have community membership, so routing
+pairing to the main relay cannot replace the sidecar. The pairing relay has no
+credentials, database, or persistent volumes; it forwards signed encrypted
+pairing events between connected devices. The phone must also have tailnet
+access to this hostname.
+
+After rebuilding an existing deployment to add pairing, start the new service
+and add the `/pair` Tailscale route above. Verify:
+
+```sh
+sudo systemctl start podman-buzz-pairing.service
+sudo podman healthcheck run buzz-pairing
+curl -fsS -H 'Accept: application/nostr+json' https://buzz.manx-in.ts.net/
+```
+
+The discovery document should contain
+`"pairing_relay_url":"wss://buzz.manx-in.ts.net/pair"`. A plain HTTP request
+to `/pair` returns 400 because it requires a WebSocket upgrade; 404 indicates
+the path is still routed to the main relay. Reopen the Desktop mobile-pairing
+dialog after the new route is active. Complete the QR and verification flow on
+both devices to confirm pairing end to end.
 
 ## Operations and backups
 
