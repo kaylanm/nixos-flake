@@ -38,6 +38,16 @@
   ],
   "packageRules": [
     {
+      "description": "Keep Buzz databases on their current major versions",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "docker.io/library/redis",
+        "docker.io/library/postgres"
+      ],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "description": "Keep flake inputs in one nightly-style update",
       "matchManagers": [
         "nix"

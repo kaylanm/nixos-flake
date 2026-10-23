@@ -100,7 +100,7 @@ in
 
     virtualisation.oci-containers.containers = {
       buzz-postgres = lib.recursiveUpdate (container "postgres") {
-        image = "docker.io/library/postgres:17-alpine@sha256:eee6c6e1b0894fa4fe0075eb054af9fd1cf39a35321c2d4110626cfe506411fb";
+        image = "docker.io/library/postgres:17.11-alpine@sha256:eee6c6e1b0894fa4fe0075eb054af9fd1cf39a35321c2d4110626cfe506411fb";
         environment = {
           POSTGRES_DB = "buzz";
           POSTGRES_USER = "buzz";
@@ -112,7 +112,7 @@ in
           ++ health ''pg_isready -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'';
       };
       buzz-redis = lib.recursiveUpdate (container "redis") {
-        image = "docker.io/library/redis:7-alpine@sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541";
+        image = "docker.io/library/redis:7.4.11-alpine@sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541";
         entrypoint = "/bin/sh";
         # Expansion happens inside the container, after its runtime env is loaded.
         cmd = [
