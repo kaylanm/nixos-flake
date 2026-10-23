@@ -6,7 +6,18 @@
 }:
 
 let
-  hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+  hermes =
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent.overrideAttrs
+      (old: {
+        # ACP starts a gateway on its first session. sys.executable is the bare
+        # interpreter under Nix; use the dependency environment supplied by the
+        # package wrapper, as its existing TUI subprocess patches already do.
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace hermes_cli/gateway_runtime_start.py \
+            --replace-fail 'command = [sys.executable, "-m", "hermes_cli.main"' \
+              'command = [os.environ.get("HERMES_PYTHON", sys.executable), "-m", "hermes_cli.main"'
+        '';
+      });
   tools = pkgs.buzz-agent-tools;
   state = "/var/lib/hermes";
 in
