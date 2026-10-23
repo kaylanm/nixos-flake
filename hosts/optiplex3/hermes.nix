@@ -19,15 +19,22 @@ let
         '';
       });
   tools = pkgs.buzz-agent-tools;
-  registrationPython = pkgs.python3.withPackages (ps: [
+  credentialPython = pkgs.python3.withPackages (ps: [
     ps.bech32
     ps.coincurve
   ]);
   registerAgent = pkgs.writeShellApplication {
     name = "buzz-register-hermes";
     text = ''
-      exec ${registrationPython}/bin/python3 ${./hermes/register-agent.py} \
+      exec ${credentialPython}/bin/python3 ${./hermes/register-agent.py} \
         --relay https://${config.services.buzz.hostname} \
+        --owner ${config.services.buzz.ownerPublicKey} "$@"
+    '';
+  };
+  provisionIdentity = pkgs.writeShellApplication {
+    name = "buzz-provision-hermes";
+    text = ''
+      exec ${credentialPython}/bin/python3 ${./hermes/provision-identity.py} \
         --owner ${config.services.buzz.ownerPublicKey} "$@"
     '';
   };
@@ -38,6 +45,7 @@ in
     hermes
     tools
     registerAgent
+    provisionIdentity
   ];
 
   users.groups.hermes = { };

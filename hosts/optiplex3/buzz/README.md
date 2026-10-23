@@ -131,16 +131,26 @@ NIP-OA authentication path. Ensure the agent is a member of the intended test
 channel. Do not run another harness with the same identity at the same time
 (for example, a local agent in Buzz Desktop).
 
-On optiplex3, create `/etc/hermes/secrets.env` outside this checkout:
+The installed `buzz-provision-hermes` helper creates the separate agent identity
+and its owner attestation. On optiplex3, provision a **new** identity with:
 
 ```sh
 sudo install -d -m 0700 -o root -g root /etc/hermes
-sudoedit /etc/hermes/secrets.env
-sudo chown root:root /etc/hermes/secrets.env
-sudo chmod 0600 /etc/hermes/secrets.env
+sudo buzz-provision-hermes --output /etc/hermes/secrets.env
 ```
 
-Use systemd environment-file syntax, with the actual agent credentials:
+Enter the owner's private key (nsec or hex) at the hidden prompt. The helper
+checks it against the configured relay owner, generates a fresh agent key, and
+writes only the agent key and owner-signed authorization to a new mode-0600 file.
+It prints the agent's public key for invitations and registration; it never saves
+the owner's private key. Existing output files and symlinks are refused, so do
+not rerun this to update a working identity. This is an interactive setup command;
+the service never runs it automatically.
+
+Without `--output`, the helper creates `hermes-secrets.env` in the current
+directory. Keep generated credentials outside the checkout. To add provider
+credentials or use credentials provisioned elsewhere, edit the file with
+`sudoedit /etc/hermes/secrets.env`, using systemd environment-file syntax:
 
 ```ini
 BUZZ_PRIVATE_KEY=nsec1_REPLACE_WITH_AGENT_KEY
@@ -149,8 +159,8 @@ BUZZ_AUTH_TAG='["auth","OWNER_HEX","CONDITIONS","OWNER_SIGNATURE_HEX"]'
 # OPENROUTER_API_KEY=REPLACE_WITH_PROVIDER_KEY
 ```
 
-The auth tag is a signed credential, not a template to fill by hand. Obtain it
-through the owner's Buzz agent provisioning/signing flow. The single quotes above
+The auth tag is a signed credential, not a template to fill by hand. The
+provisioning helper generates it using the owner's signature. The single quotes above
 preserve the JSON's double quotes. Environment files do not expand shell variables
 or substitutions. The service fails visibly if its credentials file is missing.
 The same file can also supply optional harness settings, such as
@@ -202,6 +212,7 @@ conflicting policies. Run with Python including `bech32` and `coincurve`:
 
 ```sh
 python3 -B hosts/optiplex3/hermes/test-register-agent.py -v
+python3 -B hosts/optiplex3/hermes/test-provision-identity.py -v
 ```
 
 ### Model setup and service startup
