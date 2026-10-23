@@ -100,7 +100,7 @@ in
 
     virtualisation.oci-containers.containers = {
       buzz-postgres = lib.recursiveUpdate (container "postgres") {
-        image = "docker.io/library/postgres:17-alpine@sha256:eee6c6e1b0894fa4fe0075eb054af9fd1cf39a35321c2d4110626cfe506411fb";
+        image = "docker.io/library/postgres:18-alpine@sha256:898c60cb390d1085bc97bdd6a1ae968757421df394b071848b52b1c09c89d6a5";
         environment = {
           POSTGRES_DB = "buzz";
           POSTGRES_USER = "buzz";
