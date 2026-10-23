@@ -19,12 +19,25 @@ let
         '';
       });
   tools = pkgs.buzz-agent-tools;
+  registrationPython = pkgs.python3.withPackages (ps: [
+    ps.bech32
+    ps.coincurve
+  ]);
+  registerAgent = pkgs.writeShellApplication {
+    name = "buzz-register-hermes";
+    text = ''
+      exec ${registrationPython}/bin/python3 ${./hermes/register-agent.py} \
+        --relay https://${config.services.buzz.hostname} \
+        --owner ${config.services.buzz.ownerPublicKey} "$@"
+    '';
+  };
   state = "/var/lib/hermes";
 in
 {
   environment.systemPackages = [
     hermes
     tools
+    registerAgent
   ];
 
   users.groups.hermes = { };

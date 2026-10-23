@@ -156,6 +156,56 @@ or substitutions. The service fails visibly if its credentials file is missing.
 The same file can also supply optional harness settings, such as
 `BUZZ_ACP_CHANNELS` (comma-separated channel UUIDs).
 
+### Profile and mention registration
+
+Channel membership alone does not make an external agent mentionable in Desktop.
+Desktop also needs the agent's signed kind:0 profile with its NIP-OA owner
+attestation, and an owner-signed kind:30177 policy naming the agent. The harness's
+`BUZZ_ACP_DISPLAY_NAME` setting does not publish either record.
+
+Publish the profile on optiplex3 using the service's agent credentials:
+
+```sh
+sudo systemd-run --quiet --wait --pipe --collect \
+  --uid=hermes --gid=hermes \
+  --property=EnvironmentFile=/etc/hermes/secrets.env \
+  /run/current-system/sw/bin/buzz \
+  --relay https://buzz.manx-in.ts.net \
+  users set-profile --name Hermes --about "Hermes agent on optiplex3"
+```
+
+After activating this configuration, register the policy from an interactive
+terminal on optiplex3 (no sudo required):
+
+```sh
+buzz-register-hermes \
+  --agent df6c360ff6404257aae1439e974c183f6c499f15be28d98446ff6c123a45bfb3
+```
+
+This public key identifies the provisioned Hermes identity; replace it if the
+agent identity changes. Enter the **owner's** private key at the hidden prompt.
+The helper never saves it or passes it as a process argument. It verifies the key
+against the configured owner, checks the agent profile's signature and owner
+attestation, then publishes and reads back the owner-only policy. It creates no
+new identity and starts no agent process. Registration persists across restarts;
+an identical existing policy is a no-op, and a different policy is preserved
+with an error. Keep the owner's key out of `/etc/hermes/secrets.env`.
+
+Reopen Buzz Desktop and select Hermes from the `@Hermes` autocomplete in a
+channel where it has bot membership, while signed in as the owner. Other users
+remain excluded by the owner-only policy.
+
+The helper implementation is [register-agent.py](../hermes/register-agent.py).
+Its tests use disposable keys and a local HTTP relay fixture to check signing,
+registration readback, repeat runs, and rejection of forged profiles or existing
+conflicting policies. Run with Python including `bech32` and `coincurve`:
+
+```sh
+python3 -B hosts/optiplex3/hermes/test-register-agent.py -v
+```
+
+### Model setup and service startup
+
 After switching to the new optiplex3 configuration, stop the service while setting
 up Hermes and select the provider/model as its service user:
 
