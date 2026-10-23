@@ -20,6 +20,7 @@ let
     "redis"
     "minio"
     "relay"
+    "pairing"
   ];
   unit = name: "podman-buzz-${name}.service";
   health = command: [
@@ -149,6 +150,7 @@ in
           BUZZ_S3_REGION = "us-east-1";
           BUZZ_GIT_REPO_PATH = "/data/git";
           RELAY_URL = "wss://${cfg.hostname}";
+          BUZZ_PAIRING_RELAY_URL = "wss://${cfg.hostname}/pair";
           RELAY_OWNER_PUBKEY = cfg.ownerPublicKey;
           BUZZ_MEDIA_BASE_URL = "https://${cfg.hostname}/media";
           BUZZ_CORS_ORIGINS = "https://${cfg.hostname}";
@@ -164,6 +166,18 @@ in
         extraOptions =
           (container "relay").extraOptions
           ++ health ''bash -ec 'exec 3<>/dev/tcp/127.0.0.1/8080; printf "GET /_readiness HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: close\r\n\r\n" >&3; grep -q "200 OK" <&3' '';
+      };
+      # Pairing uses ephemeral identities that cannot authenticate as community
+      # members. Upstream ships a separate stateless relay in the same image.
+      buzz-pairing = lib.recursiveUpdate (container "pairing") {
+        image = cfg.image;
+        entrypoint = "/usr/local/bin/buzz-pair-relay";
+        ports = [ "127.0.0.1:3031:5000" ];
+        environmentFiles = [ ];
+        environment.BUZZ_PAIR_RELAY_BIND_ADDR = "0.0.0.0:5000";
+        extraOptions =
+          (container "pairing").extraOptions
+          ++ health "bash -ec 'exec 3<>/dev/tcp/127.0.0.1/5000'";
       };
     };
 
