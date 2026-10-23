@@ -105,3 +105,90 @@ From the repository root, credential extraction tests run without a container en
 python3 -B -m unittest discover -s hosts/optiplex3/buzz -v
 ```
 
+## Hermes agent
+
+[hermes.nix](../hermes.nix) enables `hermes.service` on optiplex3. It runs
+`buzz-acp` with `hermes-acp` and `buzz-dev-mcp`, connecting through
+`wss://buzz.manx-in.ts.net`. The Buzz tools are built from the same pinned source
+revision as the relay. No additional listening port is opened.
+
+The dedicated `hermes` user keeps its home at `/var/lib/hermes`, Hermes state at
+`/var/lib/hermes/.hermes`, and working files at `/var/lib/hermes/workspace`.
+The service has no sudo access, cannot access users' home directories, and sees
+the system filesystem read-only. Its persistent state directory remains writable.
+Only messages from the configured relay owner trigger the agent, with the usual
+Buzz mention and channel-membership filters. There is one worker and no heartbeat.
+An intentional clean exit (including Buzz's owner-authorized shutdown) is not
+automatically restarted; failures retry after 15 seconds.
+
+### First start
+
+Provision a **separate agent identity** and its owner-signed NIP-OA authorization
+for this relay. Use the agent's key, never the owner's or relay's private key.
+The owner attestation must authorize this agent key and be accepted by the
+relay's membership and token policies. This service uses the relay's enabled
+NIP-OA authentication path. Ensure the agent is a member of the intended test
+channel. Do not run another harness with the same identity at the same time
+(for example, a local agent in Buzz Desktop).
+
+On optiplex3, create `/etc/hermes/secrets.env` outside this checkout:
+
+```sh
+sudo install -d -m 0700 -o root -g root /etc/hermes
+sudoedit /etc/hermes/secrets.env
+sudo chown root:root /etc/hermes/secrets.env
+sudo chmod 0600 /etc/hermes/secrets.env
+```
+
+Use systemd environment-file syntax, with the actual agent credentials:
+
+```ini
+BUZZ_PRIVATE_KEY=nsec1_REPLACE_WITH_AGENT_KEY
+BUZZ_AUTH_TAG='["auth","OWNER_HEX","CONDITIONS","OWNER_SIGNATURE_HEX"]'
+# Optional model-provider credential, using that provider's environment variable:
+# OPENROUTER_API_KEY=REPLACE_WITH_PROVIDER_KEY
+```
+
+The auth tag is a signed credential, not a template to fill by hand. Obtain it
+through the owner's Buzz agent provisioning/signing flow. The single quotes above
+preserve the JSON's double quotes. Environment files do not expand shell variables
+or substitutions. The service fails visibly if its credentials file is missing.
+The same file can also supply optional harness settings, such as
+`BUZZ_ACP_CHANNELS` (comma-separated channel UUIDs).
+
+After switching to the new optiplex3 configuration, stop the service while setting
+up Hermes and select the provider/model as its service user:
+
+```sh
+sudo systemctl stop hermes.service
+sudo -u hermes -H hermes model
+sudo systemctl restart hermes.service
+sudo systemctl status hermes.service
+sudo journalctl -u hermes.service -f
+```
+
+The interactive model selector runs outside the service environment: it will not
+inherit `/etc/hermes/secrets.env`. Provider credentials saved by Hermes under its
+own home are also supported. Keep that state private and back it up securely.
+The service explicitly supplies session MCP tools and skips unrelated
+profile-configured MCP startup.
+
+From the owner's Buzz client, @mention Hermes in its test channel. Confirm a reply
+in the expected thread and ask it to create and read a file in its workspace.
+Restart the service and confirm the same agent identity reconnects. This live
+check requires real credentials and model access; a Nix build alone cannot
+verify it. If it connects but ignores messages, check channel membership, the
+mention, and that the sender is the configured owner.
+
+For package validation without activating the system:
+
+```sh
+nix build --impure --no-link --expr \
+  'let f = builtins.getFlake (toString ./.); in f.nixosConfigurations.optiplex3.pkgs.buzz-agent-tools'
+nix build .#nixosConfigurations.optiplex3.config.system.build.toplevel --no-link
+```
+
+Ensure new files are included in the flake source when building from a Git
+checkout. Upgrades are managed through Nix; do not run `hermes update` against
+the immutable package. Back up `/etc/hermes/secrets.env` and `/var/lib/hermes`.
+

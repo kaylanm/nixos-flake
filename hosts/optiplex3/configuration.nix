@@ -4,6 +4,7 @@
   imports = [
     ./hardware-configuration.nix
     ./buzz.nix
+    ./hermes.nix
     ./homebox.nix
     ./memos.nix
     ./netboot.nix
