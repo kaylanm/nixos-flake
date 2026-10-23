@@ -112,7 +112,7 @@ in
           ++ health ''pg_isready -h 127.0.0.1 -U "$POSTGRES_USER" -d "$POSTGRES_DB"'';
       };
       buzz-redis = lib.recursiveUpdate (container "redis") {
-        image = "docker.io/library/redis:7-alpine@sha256:57e4255cc971b1c8d6f8a6ca283ac01bc3ecdd914273ef6bfaede87aaecd6541";
+        image = "docker.io/library/redis:8-alpine@sha256:0bf6577d7774e592b29d093e3ac9390eb91e13d72c21e506afce736de5e0eeb0";
         entrypoint = "/bin/sh";
         # Expansion happens inside the container, after its runtime env is loaded.
         cmd = [
