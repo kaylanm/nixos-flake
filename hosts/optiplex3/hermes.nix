@@ -62,6 +62,43 @@ in
     "d ${state}/.hermes 0700 hermes hermes -"
   ];
 
+  systemd.services.hermes-dashboard = {
+    description = "Hermes web dashboard";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+
+    path = config.systemd.services.hermes.path;
+    environment = {
+      HOME = state;
+      HERMES_HOME = "${state}/.hermes";
+    };
+
+    serviceConfig = {
+      User = "hermes";
+      Group = "hermes";
+      StateDirectory = "hermes";
+      StateDirectoryMode = "0700";
+      WorkingDirectory = "${state}/workspace";
+      EnvironmentFile = "/etc/hermes/secrets.env";
+      # Access remotely through an SSH tunnel; the dashboard manages credentials.
+      ExecStart = "${hermes}/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open";
+      Restart = "on-failure";
+      RestartSec = "15s";
+      RestartPreventExitStatus = [ 78 ];
+      TimeoutStopSec = "30s";
+      UMask = "0077";
+      NoNewPrivileges = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      ProtectKernelTunables = true;
+      ProtectKernelModules = true;
+      ProtectControlGroups = true;
+      RestrictSUIDSGID = true;
+    };
+  };
+
   systemd.services.hermes = {
     description = "Hermes agent connected to Buzz through ACP";
     wantedBy = [ "multi-user.target" ];

@@ -267,6 +267,28 @@ initialization but fails on the first session with missing modules such as
 `ruamel.yaml`. This fix requires rebuilding/switching the NixOS configuration;
 restarting the old package alone does not pick it up.
 
+### Web dashboard
+
+The host also enables `hermes-dashboard.service` at boot. It runs as the same
+`hermes` user, shares `/var/lib/hermes/.hermes` and `/etc/hermes/secrets.env`
+with the Buzz agent, and uses the frontend bundled in the Nix package.
+
+After switching the optiplex3 configuration, check the service:
+
+```sh
+sudo systemctl status hermes-dashboard.service
+sudo journalctl -u hermes-dashboard.service -f
+```
+
+The dashboard listens on `127.0.0.1:9119`. From your workstation, open an SSH
+tunnel and then visit <http://127.0.0.1:9119> in your browser:
+
+```sh
+ssh -N -L 9119:127.0.0.1:9119 mike@optiplex3.manx-in.ts.net
+```
+
+### Live agent validation
+
 From the owner's Buzz client, @mention Hermes in its test channel. Confirm a reply
 in the expected thread and ask it to create and read a file in its workspace.
 Restart the service and confirm the same agent identity reconnects. This live
