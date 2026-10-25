@@ -261,8 +261,8 @@ own home are also supported. Keep that state private and back it up securely.
 The service explicitly supplies session MCP tools and skips unrelated
 profile-configured MCP startup.
 
-The host module also patches Hermes's on-demand gateway launcher to use the
-package's Python dependency environment. Using the bare interpreter allows ACP
+The upstream Nix package patches Hermes's on-demand gateway launcher to use its
+Python dependency environment. Using the bare interpreter allows ACP
 initialization but fails on the first session with missing modules such as
 `ruamel.yaml`. This fix requires rebuilding/switching the NixOS configuration;
 restarting the old package alone does not pick it up.
