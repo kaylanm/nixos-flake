@@ -7,6 +7,15 @@
 
 let
   hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+  officialPlugins = pkgs.fetchFromGitHub {
+    owner = "NousResearch";
+    repo = "hermes-official-plugins";
+    # Match the Home Assistant 2.0.1 pin in Hermes 0.22.5's catalog.
+    rev = "4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072";
+    hash = "sha256-Lgb2wuwhX3e/CrhCOBWhoKwXfUcSZvrsHgcDETJLydU=";
+  };
+  pluginPython = pkgs.python3.withPackages (ps: [ ps.ruamel-yaml ]);
+  setupPlugin = ./hermes/setup-homeassistant.py;
   tools = pkgs.buzz-agent-tools;
   credentialPython = pkgs.python3.withPackages (ps: [
     ps.bech32
@@ -51,14 +60,43 @@ in
     "d ${state}/.hermes 0700 hermes hermes -"
   ];
 
+  # Install plugin code through Nix; the packaged Hermes PM runtime is absent.
+  systemd.services.hermes-plugins = {
+    description = "Configure Nix-managed Hermes plugins";
+    before = [
+      "hermes.service"
+      "hermes-dashboard.service"
+    ];
+    restartTriggers = [
+      officialPlugins
+      setupPlugin
+    ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      User = "hermes";
+      Group = "hermes";
+      StateDirectory = "hermes";
+      StateDirectoryMode = "0700";
+      ExecStart = "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${officialPlugins}/homeassistant";
+      UMask = "0077";
+    };
+  };
+
   systemd.services.hermes-dashboard = {
     description = "Hermes web dashboard";
     wantedBy = [ "multi-user.target" ];
+    requires = [ "hermes-plugins.service" ];
+    restartTriggers = [
+      officialPlugins
+      setupPlugin
+    ];
     wants = [
       "network-online.target"
       "tsidp.service"
     ];
     after = [
+      "hermes-plugins.service"
       "network-online.target"
       "tsidp.service"
     ];
@@ -100,11 +138,17 @@ in
   systemd.services.hermes = {
     description = "Hermes agent connected to Buzz through ACP";
     wantedBy = [ "multi-user.target" ];
+    requires = [ "hermes-plugins.service" ];
+    restartTriggers = [
+      officialPlugins
+      setupPlugin
+    ];
     wants = [
       "network-online.target"
       "buzz.target"
     ];
     after = [
+      "hermes-plugins.service"
       "network-online.target"
       "buzz.target"
     ];

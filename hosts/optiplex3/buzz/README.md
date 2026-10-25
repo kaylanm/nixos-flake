@@ -391,6 +391,60 @@ user is excluded by your access policy and confirm access is denied. A Nix build
 validates the units and packages but does not enroll the node, change tailnet
 policy, register the client, or validate the live browser flow.
 
+### Home Assistant plugin
+
+The host pins the official `homeassistant` plugin at catalog commit
+`4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072`. `hermes-plugins.service` runs before
+the agent and dashboard, links it into
+`/var/lib/hermes/.hermes/plugins/homeassistant`, and enables it in `config.yaml`.
+The setup preserves other plugin selections, model settings, comments, and
+platform toolsets. The Nix Hermes package already includes its `aiohttp`
+dependency. No runtime PM install is needed: `hermes plugins install` fails
+with this package because its install metadata does not supply a PM runtime.
+
+If a manually installed `plugins/homeassistant` directory already exists, setup
+refuses to replace it. Move that directory aside as a backup and restart
+`hermes-plugins.service`, followed by the agent and dashboard. Nix-managed
+symlinks are updated automatically when the plugin pin changes.
+
+Add the actual Home Assistant endpoint and a dedicated user's long-lived token
+to `/etc/hermes/secrets.env` using `sudoedit`:
+
+```ini
+HASS_URL="https://YOUR_HOME_ASSISTANT_HOST"
+HASS_TOKEN="YOUR_LONG_LIVED_TOKEN"
+```
+
+Keep the file owned by root with mode `0600`. Both services inherit it. Ensure
+optiplex3 can reach the configured endpoint on optiplex1, including through any
+Tailscale access policy. Optional `HASS_ENTITY_ALLOWLIST` and
+`HASS_ENTITY_DENYLIST` variables constrain which entities the plugin's tools
+can access. Configure the actual entity IDs you intend Hermes to use.
+
+After switching the updated configuration, restart the consumers to pick up
+credentials, then check plugin registration:
+
+```sh
+sudo systemctl restart hermes.service hermes-dashboard.service
+sudo systemctl status hermes-plugins.service --no-pager
+sudo -u hermes -H hermes plugins list
+```
+
+The four tools are `ha_list_entities`, `ha_get_state`, `ha_list_services`, and
+`ha_call_service`. They are available to CLI/dashboard and ACP sessions when
+the plugin is enabled and `HASS_TOKEN` is set; explicit toolset suppression in
+the existing profile still applies. Start a new chat and first ask Hermes to
+read an entity state. State-change event subscriptions require separate
+`platforms.homeassistant.extra.watch_entities` / `watch_domains` configuration;
+this setup does not opt into watching all events.
+
+The config migration regression checks can be run with a Python environment
+containing `ruamel.yaml`:
+
+```sh
+python3 -B hosts/optiplex3/hermes/test-setup-homeassistant.py -v
+```
+
 ### Live agent validation
 
 From the owner's Buzz client, @mention Hermes in its test channel. Confirm a reply
