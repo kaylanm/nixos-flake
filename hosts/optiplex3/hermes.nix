@@ -37,6 +37,20 @@ let
     '';
   };
   state = "/var/lib/hermes";
+  githubAuth = pkgs.github-app-auth;
+  githubEnvironment = {
+    GITHUB_APP_ID = "5470392";
+    GITHUB_APP_INSTALLATION_ID = "175225255";
+    # A runtime string, deliberately NOT a Nix path literal or readFile.
+    GITHUB_APP_PRIVATE_KEY_FILE = "/etc/hermes/kaylanm-hermes-agent.2026-10-25.private-key.pem";
+    GIT_CONFIG_GLOBAL = toString (
+      pkgs.writeText "hermes-gitconfig" ''
+        [credential "https://github.com"]
+          helper =
+          helper = ${githubAuth}/bin/git-credential-github-app
+      ''
+    );
+  };
 in
 {
   environment.systemPackages = [
@@ -44,6 +58,7 @@ in
     tools
     registerAgent
     provisionIdentity
+    githubAuth
   ];
 
   users.groups.hermes = { };
@@ -58,6 +73,10 @@ in
     "d ${state} 0700 hermes hermes -"
     "d ${state}/workspace 0700 hermes hermes -"
     "d ${state}/.hermes 0700 hermes hermes -"
+    # Traversal only for Hermes; never grant directory listing or secrets.env access.
+    "d /etc/hermes 0710 root hermes -"
+    "z /etc/hermes/secrets.env 0600 root root -"
+    "z ${githubEnvironment.GITHUB_APP_PRIVATE_KEY_FILE} 0640 root hermes -"
   ];
 
   # Install plugin code through Nix; the packaged Hermes PM runtime is absent.
@@ -102,7 +121,7 @@ in
     ];
 
     path = config.systemd.services.hermes.path;
-    environment = {
+    environment = githubEnvironment // {
       HOME = state;
       HERMES_HOME = "${state}/.hermes";
       HERMES_DASHBOARD_PUBLIC_URL = "https://hermes.manx-in.ts.net";
@@ -155,6 +174,7 @@ in
     unitConfig.StartLimitIntervalSec = 0;
 
     path = [
+      githubAuth
       tools
       hermes
       pkgs.bash
@@ -163,7 +183,7 @@ in
       pkgs.ripgrep
       pkgs.curl
     ];
-    environment = {
+    environment = githubEnvironment // {
       HOME = state;
       HERMES_HOME = "${state}/.hermes";
       HERMES_ACP_SKIP_CONFIGURED_MCP = "1";
