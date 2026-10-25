@@ -54,13 +54,22 @@ in
   systemd.services.hermes-dashboard = {
     description = "Hermes web dashboard";
     wantedBy = [ "multi-user.target" ];
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
+    wants = [
+      "network-online.target"
+      "tsidp.service"
+    ];
+    after = [
+      "network-online.target"
+      "tsidp.service"
+    ];
 
     path = config.systemd.services.hermes.path;
     environment = {
       HOME = state;
       HERMES_HOME = "${state}/.hermes";
+      HERMES_DASHBOARD_PUBLIC_URL = "https://hermes.manx-in.ts.net";
+      HERMES_DASHBOARD_OIDC_ISSUER = "https://idp.manx-in.ts.net";
+      HERMES_DASHBOARD_OIDC_SCOPES = "openid profile email";
     };
 
     serviceConfig = {
@@ -70,7 +79,7 @@ in
       StateDirectoryMode = "0700";
       WorkingDirectory = "${state}/workspace";
       EnvironmentFile = "/etc/hermes/secrets.env";
-      # Access remotely through an SSH tunnel; the dashboard manages credentials.
+      # Tailscale Services terminates HTTPS and proxies to this local listener.
       ExecStart = "${hermes}/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open";
       Restart = "on-failure";
       RestartSec = "15s";

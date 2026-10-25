@@ -12,6 +12,7 @@
     ./paperless.nix
     ./rustdesk.nix
     ./sane.nix
+    ./tsidp.nix
     #./synapse.nix
   ];
 

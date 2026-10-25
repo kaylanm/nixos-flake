@@ -280,12 +280,116 @@ sudo systemctl status hermes-dashboard.service
 sudo journalctl -u hermes-dashboard.service -f
 ```
 
-The dashboard listens on `127.0.0.1:9119`. From your workstation, open an SSH
-tunnel and then visit <http://127.0.0.1:9119> in your browser:
+The public URL is <https://hermes.manx-in.ts.net>, with a backend listening on
+`127.0.0.1:9119`. Setting this URL enables Hermes's authentication gate, including
+on the local listener. Authentication uses the bundled self-hosted OIDC provider
+with the tsidp prototype described below. Without a configured provider, the
+dashboard refuses to start.
+
+As with Buzz, the public URL setting does not create DNS or TLS. Configure a
+[Tailscale Service](https://tailscale.com/docs/features/tailscale-services) named
+`hermes` with TCP port 443 and authorize optiplex3 to host it. On optiplex3, run:
 
 ```sh
-ssh -N -L 9119:127.0.0.1:9119 mike@optiplex3.manx-in.ts.net
+sudo tailscale serve --service=svc:hermes --https=443 http://127.0.0.1:9119
+sudo systemctl restart hermes-dashboard.service
 ```
+
+Tailscale supplies the service hostname and HTTPS certificate. Tailnet access
+policy controls who can reach it; the dashboard additionally requires login.
+
+### Tailscale OIDC prototype (tsidp)
+
+The host's [tsidp.nix](../tsidp.nix) enables the pinned Nixpkgs `tsidp` package
+as `tsidp.service`. It creates a separate tsnet node named `idp`, serving
+<https://idp.manx-in.ts.net> directly
+over the tailnet. It does not need another Serve route or a host firewall port.
+Funnel, token exchange (STS), and the optional localhost listener are disabled.
+State, including the node identity, signing key, and registered clients, lives
+under `/var/lib/tsidp` (managed by systemd's dynamic-user state directory).
+Back it up with `/etc/hermes/secrets.env`; do not delete it between restarts.
+
+This prototype uses the upstream [tsidp](https://github.com/tailscale/tsidp)
+client-registration flow and Hermes's
+[self-hosted OIDC provider](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-dashboard#self-hosted-oidc-provider).
+tsidp is experimental. Enrollment and tailnet policy are manual steps:
+
+1. Switch to this host configuration, then follow the enrollment URL printed by
+   `sudo journalctl -u tsidp.service -f`. Enroll it in `manx-in.ts.net` and assign
+   `tag:tsidp` in the Tailscale admin console. If `idp` is already taken, resolve
+   the name conflict or update both the node hostname and Hermes's issuer URL.
+   Ensure MagicDNS and HTTPS certificates are enabled for the tailnet.
+
+2. Add `tag:tsidp` to your tailnet policy's `tagOwners`, with an appropriate owner
+   such as `autogroup:admin`. Grant only your intended users TCP 443 access to
+   the IdP and the `svc:hermes` service. Also allow optiplex3 to reach the IdP's
+   TCP 443 for OIDC discovery, JWKS, and token requests. Broad existing allow
+   rules must be narrowed too: Tailscale grants are additive. Any user who can
+   authenticate at the IdP and reach this dashboard can manage Hermes; this
+   prototype does not add a separate Hermes user allowlist.
+
+3. To allow your own user to register the Hermes client, merge this application
+   capability grant into the policy's existing `grants` list, replacing the
+   example login with your actual Tailscale login:
+
+   ```json
+   {
+     "src": ["YOUR_TAILSCALE_LOGIN"],
+     "dst": ["tag:tsidp"],
+     "app": {
+       "tailscale.com/cap/tsidp": [{"allow_admin_ui": true}]
+     }
+   }
+   ```
+
+   This grants admin UI access, in addition to the network access from step 2.
+   Dynamic client registration and STS capability grants are unnecessary.
+
+4. From a user-owned Tailscale device, visit <https://idp.manx-in.ts.net> and
+   select **Add New Client**. Name it `Hermes` and register exactly this redirect:
+
+   ```text
+   https://hermes.manx-in.ts.net/auth/callback
+   ```
+
+   Save the generated client ID and secret. The pinned tsidp requires client
+   authentication, and Hermes 0.22.5 supports it together with PKCE S256.
+
+5. On optiplex3, use `sudoedit /etc/hermes/secrets.env` to add:
+
+   ```ini
+   HERMES_DASHBOARD_OIDC_CLIENT_ID="<generated client ID>"
+   HERMES_DASHBOARD_OIDC_CLIENT_SECRET="<generated client secret>"
+   ```
+
+   Replace the placeholders with the actual values. Keep the existing Buzz and
+   model credentials. Remove any `HERMES_DASHBOARD_BASIC_AUTH_*` and Nous
+   `HERMES_DASHBOARD_OAUTH_CLIENT_ID` entries (including from Hermes's own `.env`
+   or equivalent basic/Nous settings in `config.yaml`) to remove other login
+   methods. Keep `/etc/hermes/secrets.env` owned by root with mode `0600`.
+   Nix supplies the issuer `https://idp.manx-in.ts.net` and the scopes
+   `openid profile email`; no credentials are written into the Nix store.
+
+6. Restart `hermes-dashboard.service` and visit
+   <https://hermes.manx-in.ts.net>. Choose **Sign in with Self-Hosted OIDC**.
+   The browser is redirected to tsidp, which identifies your Tailscale user and
+   returns you to Hermes. A tagged client device has no user identity and cannot
+   complete this login; the optiplex3 backend itself can be tagged.
+
+For validation, check discovery from optiplex3:
+
+```sh
+curl --fail https://idp.manx-in.ts.net/.well-known/openid-configuration
+curl --fail http://127.0.0.1:9119/api/status
+sudo journalctl -u tsidp.service -u hermes-dashboard.service -n 80 --no-pager
+```
+
+The dashboard status should report `auth_required: true` and include
+`self-hosted` in `auth_providers`. Confirm browser login and chat, then restart
+both services and log in again to verify state persistence. Try a device whose
+user is excluded by your access policy and confirm access is denied. A Nix build
+validates the units and packages but does not enroll the node, change tailnet
+policy, register the client, or validate the live browser flow.
 
 ### Live agent validation
 
