@@ -10,7 +10,7 @@ let
   officialPlugins = pkgs.fetchFromGitHub {
     owner = "NousResearch";
     repo = "hermes-official-plugins";
-    # Match the Home Assistant 2.0.1 pin in Hermes 0.22.5's catalog.
+    # renovate: ref=main
     rev = "4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072";
     hash = "sha256-Lgb2wuwhX3e/CrhCOBWhoKwXfUcSZvrsHgcDETJLydU=";
   };

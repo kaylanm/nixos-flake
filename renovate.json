@@ -13,6 +13,17 @@
   "customManagers": [
     {
       "customType": "regex",
+      "description": "Update annotated fetchFromGitHub commit pins",
+      "managerFilePatterns": ["/\\.nix$/"],
+      "matchStrings": [
+        "(?:pkgs\\.)?fetchFromGitHub\\s*\\{\\s*owner\\s*=\\s*\"(?<githubOwner>[A-Za-z0-9-]+)\"\\s*;\\s*repo\\s*=\\s*\"(?<githubRepo>[A-Za-z0-9_.-]+)\"\\s*;\\s*# renovate: ref=(?<currentValue>[A-Za-z0-9_./-]+)[ \\t]*\\r?\\n[ \\t]*rev\\s*=\\s*\"(?<currentDigest>[a-f0-9]{40})\""
+      ],
+      "depNameTemplate": "{{{githubOwner}}}/{{{githubRepo}}}",
+      "packageNameTemplate": "https://github.com/{{{githubOwner}}}/{{{githubRepo}}}",
+      "datasourceTemplate": "git-refs"
+    },
+    {
+      "customType": "regex",
       "description": "Update OCI container images in Nix modules",
       "managerFilePatterns": [
         "/\\.nix$/"

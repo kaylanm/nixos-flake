@@ -393,8 +393,10 @@ policy, register the client, or validate the live browser flow.
 
 ### Home Assistant plugin
 
-The host pins the official `homeassistant` plugin at catalog commit
-`4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072`. `hermes-plugins.service` runs before
+The host pins the official `homeassistant` plugin source in `hermes.nix`;
+Renovate tracks the upstream `main` branch and refreshes its commit and source
+hash through the repository's GitHub Actions workflow. The initial pin came
+from Hermes's plugin catalog. `hermes-plugins.service` runs before
 the agent and dashboard, links it into
 `/var/lib/hermes/.hermes/plugins/homeassistant`, and enables it in `config.yaml`.
 The setup preserves other plugin selections, model settings, comments, and
