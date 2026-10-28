@@ -7,6 +7,7 @@
     ./hermes.nix
     ./homebox.nix
     ./memos.nix
+    ./multica.nix
     ./netboot.nix
     ./outline.nix
     ./paperless.nix
@@ -27,6 +28,8 @@
     # npub10pn4w5qhvr5vu3crkr44sdc2far2jw0ljle8uqs9lzrrzeqvacqskzky6a
     ownerPublicKey = "786757501760e8ce4703b0eb58370a4f46a939ff97f27e0205f88631640cee01";
   };
+  # Disabled prototype; see multica/README.md before opting in.
+  services.multica.enable = false;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   programs.llm-agents.enable = true;
