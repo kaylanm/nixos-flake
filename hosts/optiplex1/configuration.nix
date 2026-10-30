@@ -33,9 +33,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Remove this after https://github.com/NixOS/nixpkgs/issues/180175
-  systemd.services.NetworkManager-wait-online.enable = pkgs.lib.mkForce false;
-
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
