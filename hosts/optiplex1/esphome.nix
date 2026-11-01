@@ -1,19 +1,11 @@
-{
-  config,
-  pkgs,
-  inputs,
-  ...
-}:
+{ pkgs, ... }:
 
-let
-  esphomePkg = pkgs.esphome;
-in
 {
   services.esphome = {
     enable = true;
-    package = esphomePkg;
+    remoteBuildAddress = "127.0.0.1";
   };
 
   # esphome cli for interactive use
-  environment.systemPackages = [ esphomePkg ];
+  environment.systemPackages = [ pkgs.esphome ];
 }
