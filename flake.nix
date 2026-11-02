@@ -151,7 +151,7 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/optiplex3/configuration.nix
-            # sops-nix.nixosModules.sops
+            sops-nix.nixosModules.sops
           ]
           ++ modules.nixos;
         };

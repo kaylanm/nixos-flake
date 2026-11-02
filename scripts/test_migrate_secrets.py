@@ -10,6 +10,14 @@ SCRIPT = pathlib.Path(__file__).with_name('migrate-secrets')
 
 
 class MigrationTests(unittest.TestCase):
+    def test_optiplex3_includes_all_active_external_credentials(self):
+        module = runpy.run_path(str(SCRIPT), run_name='migration_test')
+        self.assertEqual(module['SOURCES'].get('optiplex3'), {
+            'buzz-environment': 'etc/buzz/secrets.env',
+            'hermes-environment': 'etc/hermes/secrets.env',
+            'github-app-private-key': 'etc/hermes/kaylanm-hermes-agent.2026-10-25.private-key.pem',
+        })
+
     def test_preserves_file_payloads_exactly(self):
         module = runpy.run_path(str(SCRIPT), run_name='migration_test')
         with tempfile.TemporaryDirectory() as directory:
@@ -94,7 +102,7 @@ class MigrationTests(unittest.TestCase):
             subprocess.run(['age-keygen', '-o', str(key)], capture_output=True, check=True)
             recipient = subprocess.check_output(['age-keygen', '-y', str(key)], text=True).strip()
             (root / '.sops.yaml').write_text(json.dumps({'creation_rules': [{
-                'path_regex': '^secrets/optiplex[12]\\.yaml$', 'age': recipient,
+                'path_regex': '^secrets/optiplex[123]\\.yaml$', 'age': recipient,
             }]}))
             for host, sources in module['SOURCES'].items():
                 expected = {}

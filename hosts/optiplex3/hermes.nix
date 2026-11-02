@@ -42,7 +42,7 @@ let
     GITHUB_APP_ID = "5470392";
     GITHUB_APP_INSTALLATION_ID = "175225255";
     # A runtime string, deliberately NOT a Nix path literal or readFile.
-    GITHUB_APP_PRIVATE_KEY_FILE = "/etc/hermes/kaylanm-hermes-agent.2026-10-25.private-key.pem";
+    GITHUB_APP_PRIVATE_KEY_FILE = config.sops.secrets.github-app-private-key.path;
     GIT_CONFIG_GLOBAL = toString (
       pkgs.writeText "hermes-gitconfig" ''
         [credential "https://github.com"]
@@ -73,10 +73,8 @@ in
     "d ${state} 0700 hermes hermes -"
     "d ${state}/workspace 0700 hermes hermes -"
     "d ${state}/.hermes 0700 hermes hermes -"
-    # Traversal only for Hermes; never grant directory listing or secrets.env access.
+    # Traversal only for Hermes; SOPS owns the key's permissions and symlink.
     "d /etc/hermes 0710 root hermes -"
-    "z /etc/hermes/secrets.env 0600 root root -"
-    "z ${githubEnvironment.GITHUB_APP_PRIVATE_KEY_FILE} 0640 root hermes -"
   ];
 
   # Install plugin code through Nix; the packaged Hermes PM runtime is absent.
@@ -135,7 +133,7 @@ in
       StateDirectory = "hermes";
       StateDirectoryMode = "0700";
       WorkingDirectory = "${state}/workspace";
-      EnvironmentFile = "/etc/hermes/secrets.env";
+      EnvironmentFile = config.sops.secrets.hermes-environment.path;
       # Tailscale Services terminates HTTPS and proxies to this local listener.
       ExecStart = "${hermes}/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open";
       Restart = "on-failure";
@@ -205,7 +203,7 @@ in
       StateDirectory = "hermes";
       StateDirectoryMode = "0700";
       WorkingDirectory = "${state}/workspace";
-      EnvironmentFile = "/etc/hermes/secrets.env";
+      EnvironmentFile = config.sops.secrets.hermes-environment.path;
       ExecStart = "${tools}/bin/buzz-acp";
       Restart = "on-failure";
       RestartSec = "15s";
