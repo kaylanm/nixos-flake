@@ -14,7 +14,7 @@
     };
     port = 2293;
     secretFiles = {
-      NEXTAUTH_SECRET = "/etc/nextauth-secret";
+      NEXTAUTH_SECRET = config.sops.secrets."linkwarden-nextauth-secret".path;
     };
   };
 }
