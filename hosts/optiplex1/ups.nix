@@ -1,6 +1,16 @@
 { config, pkgs, ... }:
 
 {
+  # The SNMP driver needs the network before it can detect the UPS.
+  systemd.services.upsdrv = {
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = "5s";
+    };
+  };
+
   power.ups = {
     enable = true;
     mode = "netserver";

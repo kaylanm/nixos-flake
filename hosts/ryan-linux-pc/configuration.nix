@@ -61,6 +61,8 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
+  hardware.bluetooth.enable = true;
+
   hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -124,6 +126,8 @@
     ghostty
     google-chrome
     prismlauncher
+    aisleriot
+    pysolfc
   ];
 
   services.flatpak = {

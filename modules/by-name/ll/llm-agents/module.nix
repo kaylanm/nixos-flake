@@ -21,6 +21,6 @@ in
       omp
       opencode
       pi
-    ];
+    ] ++ [ pkgs.bubblewrap ];
   };
 }

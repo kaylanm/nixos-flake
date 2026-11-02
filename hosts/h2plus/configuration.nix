@@ -27,7 +27,12 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    # Arm Ethernet WoL through NetworkManager whenever a connection activates.
+    # 64 is magic-packet wake; profiles must use the default WoL setting.
+    connectionConfig."ethernet.wake-on-lan" = 64;
+  };
 
   # Set your time zone.
   time.timeZone = "America/New_York";
@@ -119,6 +124,7 @@
     #  wget
     neovim
     git
+    ethtool
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
