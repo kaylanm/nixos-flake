@@ -30,8 +30,8 @@
       grc
       inputs.colmena.packages.x86_64-linux.colmena
       python3
-      sane-frontends
-      xsane
+      # GTK 3 frontend; scanimage remains available through hardware.sane.
+      simple-scan
     ])
     ++ (with pkgsMaster; [
       yt-dlp
