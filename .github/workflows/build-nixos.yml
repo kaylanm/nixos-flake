@@ -66,6 +66,7 @@ jobs:
           NIXOS_CONFIGURATION: ${{ matrix.configuration }}
         run: >-
           nix build
+          --fallback
           --no-link
           --print-build-logs
           ".#nixosConfigurations.${NIXOS_CONFIGURATION}.config.system.build.toplevel"
