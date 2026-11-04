@@ -6,6 +6,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # GITHUB_TOKEN commits from the lock updater do not trigger push workflows.
+  workflow_run:
+    workflows: ["Bump flake.lock"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -17,6 +22,7 @@ concurrency:
 jobs:
   configurations:
     name: Discover configurations
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-26.04
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
