@@ -43,6 +43,23 @@ class SetupHomeAssistantTests(unittest.TestCase):
         setup.configure(self.home, self.source)
         self.assertEqual(previous, (self.config.read_bytes(), self.config.stat().st_mtime_ns))
 
+    def test_conduit_is_enabled_only_in_requested_home(self):
+        (self.source / "plugin.yaml").write_text("name: conduit_push\n")
+        other = self.home / "profiles/work"
+        other.mkdir(parents=True)
+        (other / "config.yaml").write_text("plugins: {enabled: []}\n")
+        self.config.write_text("plugins: {enabled: [homeassistant], disabled: [conduit_push, other]}\n")
+        setup.configure(self.home, self.source, "conduit_push")
+        self.assertEqual((self.home / "plugins/conduit_push").resolve(), self.source)
+        data = YAML().load(self.config)
+        self.assertEqual(data["plugins"]["enabled"], ["homeassistant", "conduit_push"])
+        self.assertEqual(data["plugins"]["disabled"], ["other"])
+        previous = self.config.read_bytes(), self.config.stat().st_mtime_ns
+        setup.configure(self.home, self.source, "conduit_push")
+        self.assertEqual(previous, (self.config.read_bytes(), self.config.stat().st_mtime_ns))
+        self.assertEqual((other / "config.yaml").read_text(), "plugins: {enabled: []}\n")
+        self.assertFalse((other / "plugins").exists())
+
     def test_creates_config_and_updates_managed_link(self):
         setup.configure(self.home, self.source)
         target = self.home / "plugins/homeassistant"
