@@ -14,6 +14,14 @@ let
     rev = "4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072";
     hash = "sha256-Lgb2wuwhX3e/CrhCOBWhoKwXfUcSZvrsHgcDETJLydU=";
   };
+  # Conduit 0.128.0. Runtime crypto/HTTP/WebSocket dependencies are already
+  # provided by the pinned Hermes Python environment (not a separate CLI PATH).
+  conduitPlugin = pkgs.fetchFromGitHub {
+    owner = "kaishi00";
+    repo = "hermes-conduit-notifier";
+    rev = "ea5564e735f566ad37c3e031edb9783a33e90e4c";
+    hash = "sha256-4N2EjVMU33Ysj0GM99nkptAQP3BMKhyDS5SaA6aXZjo=";
+  };
   pluginPython = pkgs.python3.withPackages (ps: [ ps.ruamel-yaml ]);
   setupPlugin = ./hermes/setup-homeassistant.py;
   tools = pkgs.buzz-agent-tools;
@@ -88,6 +96,7 @@ in
     ];
     restartTriggers = [
       officialPlugins
+      conduitPlugin
       setupPlugin
     ];
     serviceConfig = {
@@ -97,7 +106,11 @@ in
       Group = "hermes";
       StateDirectory = "hermes";
       StateDirectoryMode = "0700";
-      ExecStart = "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${officialPlugins}/homeassistant";
+      # Only the default home is managed; pairing stays mutable and private.
+      ExecStart = [
+        "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${officialPlugins}/homeassistant"
+        "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${conduitPlugin} conduit_push"
+      ];
       UMask = "0077";
     };
   };
@@ -108,6 +121,7 @@ in
     requires = [ "hermes-plugins.service" ];
     restartTriggers = [
       officialPlugins
+      conduitPlugin
       setupPlugin
     ];
     wants = [
@@ -160,6 +174,7 @@ in
     requires = [ "hermes-plugins.service" ];
     restartTriggers = [
       officialPlugins
+      conduitPlugin
       setupPlugin
     ];
     wants = [
