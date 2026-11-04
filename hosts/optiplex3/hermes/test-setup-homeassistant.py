@@ -75,5 +75,55 @@ class SetupHomeAssistantTests(unittest.TestCase):
                 self.assertFalse((self.home / "plugins/homeassistant").exists())
 
 
+class SetupHermexPushTests(SetupHomeAssistantTests):
+    """Run the same preservation and safety checks for the second managed plugin."""
+
+    def setUp(self):
+        super().setUp()
+        self.source.joinpath("plugin.yaml").write_text("name: hermex-push\n")
+        original = setup.configure
+        from unittest.mock import patch
+        patcher = patch.object(
+            setup, "configure", lambda home, source: original(home, source, "hermex-push")
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_preserves_user_settings_and_comments_and_is_idempotent(self):
+        self.config.write_text(
+            "# keep this\nmodel: {default: existing-model}\n"
+            "plugins:\n  enabled: [homeassistant]\n"
+            "  disabled: [hermex-push, unwanted-plugin]\n"
+        )
+        setup.configure(self.home, self.source)
+        self.assertEqual(YAML().load(self.config)["plugins"], {
+            "enabled": ["homeassistant", "hermex-push"], "disabled": ["unwanted-plugin"]
+        })
+        self.assertIn("# keep this", self.config.read_text())
+        previous = self.config.read_bytes(), self.config.stat().st_mtime_ns
+        setup.configure(self.home, self.source)
+        self.assertEqual(previous, (self.config.read_bytes(), self.config.stat().st_mtime_ns))
+
+    def test_creates_config_and_updates_managed_link(self):
+        setup.configure(self.home, self.source)
+        target = self.home / "plugins/hermex-push"
+        self.assertEqual(target.resolve(), self.source)
+        newer = self.root / "plugin-v2"
+        newer.mkdir()
+        (newer / "plugin.yaml").write_text("name: hermex-push\n")
+        setup.configure(self.home, newer)
+        self.assertEqual(target.resolve(), newer)
+        self.assertEqual(YAML().load(self.config)["plugins"]["enabled"], ["hermex-push"])
+
+    def test_refuses_unmanaged_plugin_without_changing_config(self):
+        self.config.write_text("plugins: {enabled: [homeassistant]}\n")
+        previous = self.config.read_bytes()
+        target = self.home / "plugins/hermex-push"
+        target.mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, "unmanaged plugin"):
+            setup.configure(self.home, self.source)
+        self.assertEqual(self.config.read_bytes(), previous)
+
+
 if __name__ == "__main__":
     unittest.main()
