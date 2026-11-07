@@ -8,7 +8,7 @@
         acl = [ "pattern readwrite #" ];
         users = {
           DVES_USER = {
-            hashedPasswordFile = "/etc/mosquitto/passwd";
+            hashedPasswordFile = config.sops.secrets."mosquitto-password-hash".path;
           };
         };
       }
