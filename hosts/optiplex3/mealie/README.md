@@ -12,8 +12,9 @@ The backend listens only on `127.0.0.1:9000`; no firewall port is opened.
 - Review the pinned Mealie version before merging. At drafting time nixpkgs
   supplies 3.29.0, while upstream 3.30.0 includes security-relevant fixes. This
   change intentionally does not update the shared flake lock or override Mealie.
-- Arrange off-host backups of both the `mealie` PostgreSQL database and
-  `/var/lib/mealie`. No backup destination or credentials are provisioned here.
+- Provision the off-host Restic repository and runtime credential files described
+  below. The backup timer is configured here, but no destination or secrets are
+  provisioned; a missing file produces a failed backup unit, not a silent skip.
 - Do not merge until ready for activation: the host has automatic NixOS upgrades.
   A draft PR alone does not deploy this configuration.
 
@@ -75,13 +76,91 @@ from `ALLOW_SIGNUP`; retain an administrator recovery path until SSO is tested.
 
 ## Backups and rollback
 
-Back up a PostgreSQL dump of the `mealie` database together with
-`/var/lib/mealie`, including uploaded recipe images and assets. With DynamicUser,
-the state directory may be represented through `/var/lib/private/mealie`; run
-backup tooling with appropriate privileges and verify it captures the contents,
-not just a symlink. Use a quiesced snapshot or stop Mealie while taking the dump
-and copying assets for a consistent pair. Store backups off this root disk and
-test restoration into a disposable instance before relying on them.
+The daily `restic-backups-mealie.service` job runs at 03:30 local time plus up to
+30 minutes of randomized delay, with persistent catch-up. It:
+
+1. Validates repository access before stopping Mealie.
+2. Stops Mealie, creates a custom-format PostgreSQL dump and archives the contents
+   of the physical `/var/lib/private/mealie` directory, not its public symlink.
+3. Starts Mealie before uploading the consistent pair to Restic.
+4. Runs a repository metadata check after backup. This is not a full data scrub.
+5. Removes local staging after success or failure. `ExecStopPost` also attempts to
+   restart Mealie after preparation failure/timeout if the recovery marker exists.
+   A failed recovery leaves the marker and staged files for operator inspection.
+
+The unit is root-owned with `0700` staging at `/var/lib/mealie-backup`; dumps and
+assets may contain credentials. Budget **one uncompressed copy of Mealie's state
+plus a database dump**, Restic cache, and operational headroom on the root disk.
+An archive/dump failure fails the backup and triggers service recovery; it must
+not be interpreted as a successful snapshot. The whole job has a two-hour limit.
+Mealie is unavailable during the local dump/archive, not during remote upload.
+There is no automatic pruning: approve a retention policy appropriate for the
+chosen repository before enabling deletion, and monitor repository growth.
+
+### Repository provisioning and first backup
+
+Use the existing host convention, with root-owned `0600` runtime files:
+
+- `/etc/restic-repository`: the selected **off-host** Restic repository URL.
+- `/etc/restic-password`: the encryption password, escrowed separately for recovery.
+- `/etc/restic-env`: backend environment credentials in systemd EnvironmentFile
+  syntax; provision an empty file if the backend needs none. For the generated
+  shell wrapper, use entries compatible with shell assignments too.
+
+Never commit these files or place secrets in Nix settings. Restrict backend
+credentials to the intended repository. Initialize the chosen repository
+explicitly, outside this PR; `initialize = false` avoids creating a repository
+at an accidentally configured location. No destination has been selected or
+contacted by drafting this configuration.
+
+After authorized activation and credential provisioning:
+
+```sh
+sudo restic-mealie cat config
+sudo systemctl start restic-backups-mealie.service
+sudo journalctl -u restic-backups-mealie.service
+sudo restic-mealie snapshots --host optiplex3 --tag mealie
+systemctl list-timers restic-backups-mealie.timer
+```
+
+Missing credentials, unreachable repositories, inactive Mealie, failed dumps,
+failed uploads and failed recovery all produce failed units. Monitor the unit,
+its journal and the age of the last successful snapshot; off-host alert delivery
+is not configured by this PR. If recovery fails, inspect the journal and
+`/var/lib/mealie-backup/restart-mealie`, repair the underlying cause, and restart
+Mealie manually before clearing the marker. A machine crash can interrupt the
+process; normal boot starts Mealie through its own wantedBy dependency.
+
+### Restore rehearsal
+
+Use an isolated instance with the matching Mealie version, **never the production
+database as a rehearsal target**. Select an explicit snapshot ID from the filtered
+snapshot listing, then as root:
+
+```sh
+sudo restic-mealie check --read-data
+sudo restic-mealie restore SNAPSHOT_ID --target /path/on/recovery-disk
+```
+
+The recovered pair is under
+`/path/on/recovery-disk/var/lib/mealie-backup/snapshot/`:
+
+- `database.dump`: restore with `pg_restore --exit-on-error --no-owner --no-acl`
+  into a fresh disposable database. In a NixOS Mealie instance, restore as the
+  dedicated `mealie` role (or use a superuser with `--role=mealie`) so the service
+  owns its tables. Do not restore a raw PostgreSQL data directory.
+- `assets.tar`: extract only into an empty recovery directory first and inspect
+  it. Stop the disposable Mealie instance, install those contents into its real
+  persistent state directory, and set ownership to that instance's state owner;
+  do not assume a saved DynamicUser numeric UID is reusable.
+
+Keep the disposable service stopped while restoring both parts, start it only
+after the pair is in place, and verify login, recipes, images, uploads and restart
+persistence. Save the tested snapshot ID and date in operations records. The
+included isolated integration test verifies PostgreSQL dump/restore and a real
+Restic archive round-trip using test data; it does not prove a production Mealie
+restore or access to the future off-host repository.
+
 
 A NixOS generation rollback does not reverse database migrations. Before an
 upgrade, retain a matching database/state backup; use that backup if downgrading
@@ -95,6 +174,10 @@ From the repository root:
 
 ```sh
 nix eval --impure --json --file hosts/optiplex3/mealie/test-config.nix
+nix eval --impure --json --file hosts/optiplex3/mealie/test-backup-config.nix
+python3 hosts/optiplex3/mealie/test-backup-hooks.py -v
+# Include the PostgreSQL + Restic round-trip (requires PostgreSQL tools on PATH):
+RESTIC_BIN="$(command -v restic)" python3 hosts/optiplex3/mealie/test-backup-hooks.py -v
 ```
 
 This checks host scope, loopback binding, firewall policy, PostgreSQL provisioning,
