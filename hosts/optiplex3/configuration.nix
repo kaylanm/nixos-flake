@@ -6,6 +6,7 @@
     ./buzz.nix
     ./hermes.nix
     ./homebox.nix
+    ./mealie.nix
     ./memos.nix
     ./netboot.nix
     ./outline.nix
