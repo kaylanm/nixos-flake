@@ -8,6 +8,9 @@ configuration settings.  The modules directory organization is inspired by [RFC-
 
 This repository is inspired by [nixos-configs][nixos-configs].
 
+See [release package updates](docs/package-updates.md) for the automated update
+allowlist, GitHub App setup, and local no-publish validation commands.
+
 [home-manager]: https://github.com/nix-community/home-manager
 [rfc-0140]: https://github.com/NixOS/rfcs/pull/140
 [sops-nix]: https://github.com/Mic92/sops-nix
