@@ -172,7 +172,6 @@
         _1password-gui
         alacritty
         bibata-cursors
-        brave
         discord
         fastfetch
         firefox
