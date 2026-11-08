@@ -34,7 +34,8 @@
       simple-scan
     ])
     ++ (with pkgsMaster; [
-      yt-dlp
+      # Keep yt-dlp current without rebuilding master Deno/V8 in CI.
+      (yt-dlp.override { jsRuntime = pkgs.deno; })
     ]);
 
   hardware.sane = {
