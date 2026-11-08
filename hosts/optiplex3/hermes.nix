@@ -6,7 +6,20 @@
 }:
 
 let
-  hermes = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent;
+  hermes =
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent.overrideAttrs
+      (old: {
+        # The dashboard's sys.executable is bare Nix Python. Internal workers
+        # must use the dependency environment, just like gateway/slash workers.
+        postPatch = (old.postPatch or "") + ''
+          substituteInPlace hermes_cli/kanban_db_dispatch.py \
+            --replace-fail 'return [sys.executable, "-m", "hermes_cli.kanban_worker_client"]' \
+              'return [os.environ.get("HERMES_PYTHON", sys.executable), "-m", "hermes_cli.kanban_worker_client"]'
+        '';
+        installCheckPhase = (old.installCheckPhase or "") + ''
+          ${pkgs.python3}/bin/python3 ${./hermes/test-kanban-python.py} "$out"
+        '';
+      });
   officialPlugins = pkgs.fetchFromGitHub {
     owner = "NousResearch";
     repo = "hermes-official-plugins";
