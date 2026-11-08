@@ -193,7 +193,8 @@
         gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
       ]
       ++ (with pkgsMaster; [
-        yt-dlp
+        # Keep yt-dlp current without rebuilding master Deno/V8 in CI.
+        (yt-dlp.override { jsRuntime = pkgs.deno; })
       ]);
     shell = pkgs.fish;
   };
