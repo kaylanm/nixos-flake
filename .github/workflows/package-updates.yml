@@ -1,0 +1,101 @@
+name: Update release packages
+
+on:
+  schedule:
+    - cron: "23 8 * * 1"
+  workflow_dispatch:
+    inputs:
+      check_only:
+        description: "Validate updates and builds without publishing PRs"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: package-updates
+  cancel-in-progress: false
+
+jobs:
+  update:
+    # Dispatches on other refs must never execute branch code with App credentials.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - package: sane-scan-pdf
+            path: pkgs/sane-scan-pdf/default.nix
+          - package: octoapp
+            path: pkgs/octoapp/default.nix
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Require publishing credentials
+        if: github.event_name == 'schedule' || !inputs.check_only
+        env:
+          APP_CONFIGURED: ${{ vars.PACKAGE_UPDATE_APP_ID != '' && secrets.PACKAGE_UPDATE_APP_PRIVATE_KEY != '' }}
+        run: |
+          if [ "$APP_CONFIGURED" != true ]; then
+            echo '::error::Set repository variable PACKAGE_UPDATE_APP_ID and secret PACKAGE_UPDATE_APP_PRIVATE_KEY (see docs/package-updates.md).'
+            exit 1
+          fi
+
+      - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # v31
+
+      - name: Test updater and workflow contracts
+        run: |
+          nix shell --no-write-lock-file .#package-update-tools --command python3 -m unittest discover -s tests -v
+          nix shell --no-write-lock-file .#package-update-tools --command actionlint .github/workflows/package-updates.yml .github/workflows/package-update-tests.yml
+
+      - name: Update release and hash; build package
+        id: update
+        env:
+          PACKAGE: ${{ matrix.package }}
+        run: nix shell --no-write-lock-file .#package-update-tools --command python3 scripts/update_packages.py "$PACKAGE" --apply
+
+      - name: Detect package changes
+        id: changes
+        env:
+          PACKAGE_PATH: ${{ matrix.path }}
+        run: |
+          if git diff --quiet -- "$PACKAGE_PATH"; then
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      # No App token exists while repository/upstream code is evaluated or built.
+      - uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2
+        id: app-token
+        if: steps.changes.outputs.changed == 'true' && (github.event_name == 'schedule' || !inputs.check_only)
+        with:
+          app-id: ${{ vars.PACKAGE_UPDATE_APP_ID }}
+          private-key: ${{ secrets.PACKAGE_UPDATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        if: steps.changes.outputs.changed == 'true' && (github.event_name == 'schedule' || !inputs.check_only)
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          base: main
+          branch: automation/package-${{ matrix.package }}
+          add-paths: ${{ matrix.path }}
+          commit-message: "chore(deps): update ${{ matrix.package }}"
+          title: "chore(deps): update ${{ matrix.package }}"
+          body: |
+            Update the latest stable release and source hash using locked nix-update.
+            The targeted flake package build and updater contract tests passed.
+            Review upstream compatibility and the normal PR checks before merging.
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          delete-branch: true

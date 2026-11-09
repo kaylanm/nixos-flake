@@ -66,8 +66,27 @@
     rec {
       packages = forAllSystems (
         system:
-        import ./pkgs {
-          callPackage = nixpkgs.legacyPackages.${system}.callPackage;
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          unstable = nixpkgs-unstable.legacyPackages.${system};
+        in
+        (import ./pkgs { inherit (pkgs) callPackage; })
+        // {
+          # Match pi4's OctoPrint Python scope, not top-level python3Packages.
+          octoapp = unstable.callPackage ./pkgs/octoapp {
+            inherit (pkgs) fetchFromGitHub;
+          };
+          # Tool versions follow the existing nixpkgs lock, not a floating registry.
+          package-update-tools = pkgs.buildEnv {
+            name = "package-update-tools";
+            paths = [
+              pkgs.nix-update
+              pkgs.nix
+              pkgs.git
+              pkgs.actionlint
+              (pkgs.python3.withPackages (ps: [ ps.pyyaml ]))
+            ];
+          };
         }
       );
 
