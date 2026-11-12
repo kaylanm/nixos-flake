@@ -4,6 +4,7 @@
   fetchFromGitHub,
   pkg-config,
   openssl,
+  aws-lc,
   python3,
   git,
   bash,
@@ -51,7 +52,12 @@ rustPlatform.buildRustPackage {
     python3
     git
   ];
-  buildInputs = [ openssl ];
+  # The cargo setup hook requires system AWS-LC; OpenSSL is still needed by
+  # openssl-sys and cannot satisfy aws-lc-sys's library/header discovery.
+  buildInputs = [
+    openssl
+    aws-lc
+  ];
 
   # Upstream tests generate executable fixtures rather than shipping scripts
   # that patchShebangs can discover. Nix sandboxes have no /usr/bin/env or /bin/bash.
