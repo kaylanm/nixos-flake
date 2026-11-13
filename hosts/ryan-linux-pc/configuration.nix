@@ -100,15 +100,23 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  services.udev.packages = with pkgs; [ platformio-core.udev ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."ryan" = {
     isNormalUser = true;
     description = "Ryan Kaylan";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      kdePackages.kate
-    #  thunderbird
-    ];
+    packages = with pkgs; [];
+    shell = pkgs.fish;
+  };
+
+  users.users."mike" = {
+    isNormalUser = true;
+    description = "Michael Kaylan";
+    extraGroups = [ "networkmanager" "wheel" ];
+    packages = with pkgs; [];
+    shell = pkgs.fish;
   };
 
   # Allow unfree packages

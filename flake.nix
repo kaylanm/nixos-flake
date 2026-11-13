@@ -194,7 +194,8 @@
             ./hosts/ryan-linux-pc/configuration.nix
             ./modules/by-name/fl/flake-auto-upgrade/nixos-module.nix
             nix-flatpak.nixosModules.nix-flatpak
-          ];
+          ]
+          ++ modules.nixos;
         };
       };
 
