@@ -1,11 +1,15 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      #./timekpr.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+    #./timekpr.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -72,6 +76,11 @@
   boot.kernelParams = [
     "i915.modeset=0"
     "snd_hda_core.gpu_bind=0"
+
+    # For PCIe Power Management - attempt to fix external nvidia GPU link drops.
+    "pcie_aspm=off"
+    "pcie_port_pm=off"
+    "nvidia.NVreg_ForceExternalGpu=1"
   ];
 
   # Disable nVidia HDMI audio out
@@ -112,13 +121,15 @@
 
   programs.dconf = {
     enable = true;
-    profiles.user.databases = [{
-      settings = with lib.gvariant; {
-        "org/gnome/mutter" = {
-          check-alive-timeout = mkUint32 60000;
+    profiles.user.databases = [
+      {
+        settings = with lib.gvariant; {
+          "org/gnome/mutter" = {
+            check-alive-timeout = mkUint32 60000;
+          };
         };
-      };
-    }];
+      }
+    ];
   };
 
   programs.hyprland.enable = true;
@@ -126,7 +137,10 @@
   programs.nix-ld.enable = true;
   programs.steam.enable = true;
 
-  services.udev.packages = with pkgs; [ via vial ];
+  services.udev.packages = with pkgs; [
+    via
+    vial
+  ];
 
   environment.systemPackages = with pkgs; [
     firefox
@@ -145,7 +159,11 @@
   users.users.mike = {
     isNormalUser = true;
     description = "Michael Kaylan";
-    extraGroups = [ "networkmanager" "wheel" "dialout" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "dialout"
+    ];
     packages = with pkgs; [
       killall
       pciutils
