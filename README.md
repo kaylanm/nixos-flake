@@ -10,7 +10,7 @@ This repository is inspired by [nixos-configs][nixos-configs].
 
 Rex is installed from the [official Nix flake][rex-nix], pinned in `flake.lock`.
 The client is enabled on `auriga` and `auriga-nixos`. On `optiplex1`, `optiplex2`,
-`optiplex3`, and `elite2`, `rex.service` starts at boot as `mike` and listens on
+`optiplex3`, `elite2`, and `h2plus`, `rex.service` starts at boot as `mike` and listens on
 the owner-only socket `/run/rex/server.sock`. Sessions run with Mike's home and
 permissions; persistent server state is stored in `/var/lib/rex`.
 

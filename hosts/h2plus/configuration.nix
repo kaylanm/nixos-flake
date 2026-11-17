@@ -137,6 +137,8 @@
 
   # List services that you want to enable:
 
+  services.rex.enable = true;
+
   services.smartd = {
     enable = true;
     autodetect = true;
