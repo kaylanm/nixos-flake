@@ -19,6 +19,7 @@
 
   programs.nix-ld.enable = true;
   programs.llm-agents.enable = true;
+  programs.rex.enable = true;
 
   environment.systemPackages =
     (with pkgs; [

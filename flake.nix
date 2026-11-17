@@ -12,6 +12,9 @@
     nixpkgs-master.url = "github:NixOS/nixpkgs?ref=master";
     llm-agents.url = "github:numtide/llm-agents.nix";
 
+    rex.url = "https://pkgs.superlogical.com/rex/nix/snapshot.tar.gz";
+    rex.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
     home-manager.url = "github:nix-community/home-manager?ref=release-26.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 

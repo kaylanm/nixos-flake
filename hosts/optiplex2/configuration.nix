@@ -23,6 +23,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "optiplex2"; # Define your hostname.
+
+  services.rex.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking

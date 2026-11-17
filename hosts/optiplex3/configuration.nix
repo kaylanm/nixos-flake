@@ -22,6 +22,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "optiplex3"; # Define your hostname.
+
+  services.rex.enable = true;
   services.buzz = {
     enable = true;
     hostname = "buzz.manx-in.ts.net";

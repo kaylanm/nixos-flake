@@ -31,6 +31,7 @@
   networking.hostName = "auriga"; # Define your hostname.
 
   programs.llm-agents.enable = true;
+  programs.rex.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
