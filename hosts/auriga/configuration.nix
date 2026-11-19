@@ -159,6 +159,8 @@
     package = pkgsUnstable.tailscale;
   };
 
+  services.udev.packages = with pkgs; [ platformio-core.udev ];
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mike = {
     isNormalUser = true;
