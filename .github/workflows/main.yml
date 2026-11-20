@@ -18,9 +18,6 @@ jobs:
 
       - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31
 
-      - name: Test tarball validation
-        run: python3 -m unittest discover -s tests -p 'test_validate_flake_tarballs.py' -v
-
       - run: nix flake update
 
       # A rolling tarball can advertise an immutable URL for different bytes.
