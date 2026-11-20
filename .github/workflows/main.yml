@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +18,18 @@ jobs:
 
       - uses: cachix/install-nix-action@3dc140bfc76c49fbd4dd958429132e3746bcb086 # v31
 
+      - name: Test tarball validation
+        run: python3 -m unittest discover -s tests -p 'test_validate_flake_tarballs.py' -v
+
       - run: nix flake update
+
+      # A rolling tarball can advertise an immutable URL for different bytes.
+      # Verify those URLs independently, not through the updater's fetch cache.
+      - name: Validate locked tarball sources before committing
+        run: python3 scripts/validate_flake_tarballs.py
+
+      - name: Evaluate auriga-nixos before committing
+        run: nix eval --raw --no-write-lock-file .#nixosConfigurations.auriga-nixos.config.system.build.toplevel.drvPath
 
       - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         with:
