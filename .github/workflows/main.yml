@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +19,14 @@ jobs:
       - uses: cachix/install-nix-action@bb0495a1086c46893eee56f32fd192dfe4a15bb9 # v32
 
       - run: nix flake update
+
+      # A rolling tarball can advertise an immutable URL for different bytes.
+      # Verify those URLs independently, not through the updater's fetch cache.
+      - name: Validate locked tarball sources before committing
+        run: python3 scripts/validate_flake_tarballs.py
+
+      - name: Check flake evaluation before committing
+        run: nix flake check --no-build --no-update-lock-file
 
       - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         with:
