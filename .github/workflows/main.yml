@@ -28,8 +28,8 @@ jobs:
       - name: Validate locked tarball sources before committing
         run: python3 scripts/validate_flake_tarballs.py
 
-      - name: Evaluate auriga-nixos before committing
-        run: nix eval --raw --no-write-lock-file .#nixosConfigurations.auriga-nixos.config.system.build.toplevel.drvPath
+      - name: Check flake evaluation before committing
+        run: nix flake check --no-build --no-update-lock-file
 
       - uses: stefanzweifel/git-auto-commit-action@d0b01107b5db882071f96de5dd4b54961ea93f4c # v7
         with:

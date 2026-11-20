@@ -2,7 +2,8 @@
 
 The scheduled `Bump flake.lock` workflow still tracks the input policies in
 `flake.nix`, including Rex's snapshot channel. It now validates tarball sources
-and evaluates `auriga-nixos` **before** the auto-commit step. A failed fetch,
+and checks flake evaluation with `nix flake check --no-build --no-update-lock-file`
+**before** the auto-commit step. A failed fetch,
 hash mismatch, or evaluation prevents publication; it does not rewrite a hash
 or retry until some different release happens to pass. Full system builds
 remain in the separate build workflow.
@@ -54,8 +55,19 @@ python3 -m unittest discover -s tests -p 'test_validate_flake_tarballs.py' -v
 python3 scripts/validate_flake_tarballs.py
 # Targeted diagnosis / historical lock:
 python3 scripts/validate_flake_tarballs.py --input rex --lock-file flake.lock
-nix eval --raw --no-write-lock-file .#nixosConfigurations.auriga-nixos.config.system.build.toplevel.drvPath
+nix flake check --no-build --no-update-lock-file
 ```
+
+The flake check validates recognized outputs rather than selecting a single
+host as a proxy for the repository. It does not build systems or check
+derivations (`--no-build`), and it refuses lock updates. Its default system
+filter still applies; this is not an all-platform build guarantee.
+
+Source integrity remains a separate gate. Flake evaluation can reuse an
+existing store path or fetch cache instead of downloading the locked URL.
+A normal sandboxed check derivation cannot perform arbitrary network fetches,
+and a cached check result would not repeat live source verification. Therefore
+`nix flake check` complements, rather than replaces, the fresh-cache validator.
 
 The checker validates every `type = tarball` lock node, including transitive
 inputs, using its exact locked URL with no supplied expected hash. It uses a
