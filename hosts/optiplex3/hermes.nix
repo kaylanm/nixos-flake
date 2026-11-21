@@ -14,6 +14,13 @@ let
     rev = "4d492b1dc5326af3e38bb2cf3e4b9ad6d65f0072";
     hash = "sha256-Lgb2wuwhX3e/CrhCOBWhoKwXfUcSZvrsHgcDETJLydU=";
   };
+  hermexPush = pkgs.fetchFromGitHub {
+    owner = "uzairansaruzi";
+    repo = "hermex-push";
+    # Plugin 0.7.0; only plugin/ is installed, not the relay server.
+    rev = "2da6f660bb86e9470ea56c85dc554aba45ce7fdf";
+    hash = "sha256-5ReRPEEEwvmDGW54jy+jA9f5YQHXfSxqd0BLOjL7cjk=";
+  };
   pluginPython = pkgs.python3.withPackages (ps: [ ps.ruamel-yaml ]);
   setupPlugin = ./hermes/setup-homeassistant.py;
   tools = pkgs.buzz-agent-tools;
@@ -88,6 +95,7 @@ in
     ];
     restartTriggers = [
       officialPlugins
+      hermexPush
       setupPlugin
     ];
     serviceConfig = {
@@ -97,7 +105,10 @@ in
       Group = "hermes";
       StateDirectory = "hermes";
       StateDirectoryMode = "0700";
-      ExecStart = "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${officialPlugins}/homeassistant";
+      ExecStart = [
+        "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${officialPlugins}/homeassistant"
+        "${pluginPython}/bin/python3 ${setupPlugin} ${state}/.hermes ${hermexPush}/plugin hermex-push"
+      ];
       UMask = "0077";
     };
   };
@@ -108,6 +119,7 @@ in
     requires = [ "hermes-plugins.service" ];
     restartTriggers = [
       officialPlugins
+      hermexPush
       setupPlugin
     ];
     wants = [
@@ -160,6 +172,7 @@ in
     requires = [ "hermes-plugins.service" ];
     restartTriggers = [
       officialPlugins
+      hermexPush
       setupPlugin
     ];
     wants = [
