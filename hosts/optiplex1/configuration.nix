@@ -16,6 +16,7 @@
     ./nextdns.nix
     ./printing.nix
     ./restic.nix
+    ./secrets.nix
     ./ups.nix
     ./zigbee2mqtt.nix
     ./zwave.nix

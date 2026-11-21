@@ -11,6 +11,20 @@ digest; Renovate can discover their `image` assignments.
 
 ## Credentials and first start
 
+**SOPS migration:** optiplex3 now reads `buzz-environment` and
+`hermes-environment` from encrypted `secrets/optiplex3.yaml`. Follow
+[the provisioning and rollback checklist](../../../secrets/README.md) before
+switching. The initialization steps below describe preparing legacy source
+files on a new host **before encryption**, not editing a migrated deployment.
+After migration, edit the encrypted keys with SOPS and reactivate the host; edits
+to `/etc/buzz/secrets.env` or `/etc/hermes/secrets.env` no longer affect services.
+Do not regenerate existing identities or database passwords. The GitHub App PEM
+keeps its existing `/etc/hermes/...pem` path as a SOPS-managed symlink.
+
+`buzz-env.service` uses systemd `LoadCredential` to stage the SOPS input as a
+regular root-only file, preserving the renderer's rejection of symlinks. The
+shared Hermes runtime environment is `/run/secrets/hermes-environment`.
+
 The owner's public key is configured as `services.buzz.ownerPublicKey` in
 [configuration.nix](../configuration.nix), decoded from
 `npub10pn4w5qhvr5vu3crkr44sdc2far2jw0ljle8uqs9lzrrzeqvacqskzky6a`.

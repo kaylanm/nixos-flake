@@ -213,7 +213,10 @@ in
             RuntimeDirectory = "buzz";
             RuntimeDirectoryMode = "0700";
             UMask = "0077";
-            ExecStart = "${pkgs.python3}/bin/python3 ${./buzz/render-env.py} ${lib.escapeShellArg cfg.secretsFile} ${runtime}";
+            # Stage the SOPS symlink as a regular root-only file. render-env.py
+            # deliberately refuses symlinks and must keep that safety check.
+            LoadCredential = [ "buzz-environment:${cfg.secretsFile}" ];
+            ExecStart = "${pkgs.python3}/bin/python3 ${./buzz/render-env.py} %d/buzz-environment ${runtime}";
           };
         };
 
