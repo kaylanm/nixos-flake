@@ -12,7 +12,7 @@ let
   runtime = "/run/buzz";
   podman = lib.getExe config.virtualisation.podman.package;
   images = {
-    relay.image = "ghcr.io/block/buzz:main@sha256:738ba3edab3ea174c38f4a41c0ce8d5fd0fabd7de5df9ade24a09757c7d392ae";
+    relay.image = "ghcr.io/block/buzz:main@sha256:7edcf85bd33ba2bfb6f1203db321393541b7d8c6a0794aa85f7814b910f383de";
     initializer.image = "docker.io/pgsty/mc:RELEASE.2026-09-16T00-00-00Z@sha256:cfc83108c3abb371f8fb84d99c1fdc88f8c237e022409b0081fb7c0a3be634dd";
   };
   containerNames = [
