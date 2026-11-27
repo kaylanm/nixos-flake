@@ -18,14 +18,33 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.enable = false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.windows = {
-    "nvme0n1p1" = {
-      title = "Windows 11";
-      efiDeviceHandle = "FS2";
-      sortKey = "a_windows";
+  boot.loader.limine = {
+    enable = true;
+    efiSupport = true;
+    biosSupport = false;
+    maxGenerations = 10;
+
+    # Authenticate the config and boot files when Secure Boot is enabled.
+    enableEditor = false;
+    enrollConfig = true;
+    validateChecksums = true;
+    panicOnChecksumMismatch = true;
+
+    # Enable signing after provisioning keys; see docs/auriga-secure-boot.md.
+    secureBoot = {
+      enable = true;
+      autoGenerateKeys = false;
+      autoEnrollKeys.enable = false;
     };
+
+    # Windows ESP on nvme0n1p4, identified by its GPT partition GUID.
+    extraEntries = ''
+      /Windows 11
+        protocol: efi
+        path: guid(86ef0529-a0f7-48fe-b02d-893257eafa8f):/EFI/Microsoft/Boot/bootmgfw.efi
+    '';
   };
 
   networking.hostName = "auriga"; # Define your hostname.
@@ -168,6 +187,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "adbusers"
     ];
     packages =
       with pkgs;
@@ -204,7 +224,10 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  environment.systemPackages = with pkgs; [ ];
+  environment.systemPackages = with pkgs; [
+    android-tools
+    sbctl
+  ];
 
   system.stateVersion = "23.11";
 }
