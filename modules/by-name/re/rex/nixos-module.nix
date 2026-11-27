@@ -22,6 +22,14 @@ in
         user = lib.mkDefault "mike";
         socketMode = lib.mkDefault "0600";
       };
+
+      # Rex for iOS requires hmac-sha2-256 alongside the NixOS defaults.
+      services.openssh.settings.Macs = [
+        "hmac-sha2-512-etm@openssh.com"
+        "hmac-sha2-256-etm@openssh.com"
+        "umac-128-etm@openssh.com"
+        "hmac-sha2-256"
+      ];
     })
 
     (lib.mkIf config.programs.rex.enable {
